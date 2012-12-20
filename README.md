@@ -1,4 +1,4 @@
 ais-commons-domain
 ==================
 
-Reusable components for domain modeling
+This library provides set of reusable components useful for modeling domain.
