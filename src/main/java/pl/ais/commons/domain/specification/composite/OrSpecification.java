@@ -18,6 +18,7 @@ public class OrSpecification<T> extends AbstractCompositeSpecification<T> {
      *
      * @param specifications specifications for which we create disjunction
      */
+    @SafeVarargs
     public OrSpecification(final Specification<T>... specifications) {
         this.specifications = specifications;
     }

@@ -14,9 +14,8 @@ abstract class AbstractCompositeSpecification<T> implements CompositeSpecificati
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Specification<T> and(final Specification<T> other) {
-        return new AndSpecification<T>(this, other);
+        return new AndSpecification<>(this, other);
     }
 
     /**
@@ -24,16 +23,15 @@ abstract class AbstractCompositeSpecification<T> implements CompositeSpecificati
      */
     @Override
     public Specification<T> not() {
-        return new NotSpecification<T>(this);
+        return new NotSpecification<>(this);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public Specification<T> or(final Specification<T> other) {
-        return new OrSpecification<T>(this, other);
+        return new OrSpecification<>(this, other);
     }
 
 }

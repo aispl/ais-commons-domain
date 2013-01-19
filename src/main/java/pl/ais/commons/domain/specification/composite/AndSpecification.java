@@ -18,6 +18,7 @@ public class AndSpecification<T> extends AbstractCompositeSpecification<T> {
      *
      * @param specifications specifications for which we create conjunction
      */
+    @SafeVarargs
     public AndSpecification(final Specification<T>... specifications) {
         this.specifications = specifications;
     }
