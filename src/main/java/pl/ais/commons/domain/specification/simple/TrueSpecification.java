@@ -9,7 +9,13 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class TrueSpecification<T> implements Specification<T> {
+public final class TrueSpecification<T> implements Specification<T> {
+
+    /**
+     * Defines singleton instance of {@link TrueSpecification}.
+     */
+    @SuppressWarnings("rawtypes")
+    public static final Specification INSTANCE = new TrueSpecification();
 
     /**
      * {@inheritDoc}
