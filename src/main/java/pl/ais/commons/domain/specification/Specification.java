@@ -1,5 +1,7 @@
 package pl.ais.commons.domain.specification;
 
+import javax.annotation.Nullable;
+
 /**
  * Defines the API contract for Specification.
  *
@@ -16,6 +18,6 @@ public interface Specification<T> {
      * @param candidate the candidate to verify
      * @return {@code true} if this specification is matched by the candidate, {@code false} otherwise
      */
-    boolean isSatisfiedBy(T candidate);
+    boolean isSatisfiedBy(@Nullable T candidate);
 
 }
