@@ -5,10 +5,11 @@ import pl.ais.commons.domain.specification.Specification;
 /**
  * Base class for composite specifications.
  *
+ * @param <T> determines the type of candidate
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-abstract class AbstractCompositeSpecification<T> implements CompositeSpecification<T> {
+public abstract class AbstractCompositeSpecification<T> implements CompositeSpecification<T> {
 
     /**
      * {@inheritDoc}
