@@ -1,9 +1,14 @@
 package pl.ais.commons.domain.specification;
 
+import pl.ais.commons.domain.specification.composite.NotSpecification;
+import pl.ais.commons.domain.specification.mail.ValidEmailSpecification;
+import pl.ais.commons.domain.specification.simple.AfterSpecification;
+import pl.ais.commons.domain.specification.simple.BeforeSpecification;
 import pl.ais.commons.domain.specification.simple.BlankSpecification;
-import pl.ais.commons.domain.specification.simple.FalseSpecification;
+import pl.ais.commons.domain.specification.simple.EmptySpecification;
 import pl.ais.commons.domain.specification.simple.FitIntoSpecification;
-import pl.ais.commons.domain.specification.simple.NullSpecification;
+import pl.ais.commons.domain.specification.simple.IsEqualSpecification;
+import pl.ais.commons.domain.specification.simple.RegexSpecification;
 import pl.ais.commons.domain.specification.simple.TrueSpecification;
 
 /**
@@ -15,6 +20,14 @@ import pl.ais.commons.domain.specification.simple.TrueSpecification;
 public final class Specifications {
 
     /**
+     * @param bound the bound
+     * @return specification satisfied only if candidate is after predefined bound
+     */
+    public static final <T extends Comparable<T>> Specification<T> after(final T bound) {
+        return new AfterSpecification<>(bound);
+    }
+
+    /**
      * @return specification satisfied by any candidate
      */
     public static final <T> Specification<T> always() {
@@ -22,10 +35,25 @@ public final class Specifications {
     }
 
     /**
+     * @param bound the bound
+     * @return specification satisfied only if candidate is before predefined bound
+     */
+    public static final <T extends Comparable<T>> Specification<T> before(final T bound) {
+        return new BeforeSpecification<>(bound);
+    }
+
+    /**
      * @return specification satisfied by character sequences being {@code null}, empty or holding whitespaces only
      */
     public static final Specification<CharSequence> blank() {
         return BlankSpecification.INSTANCE;
+    }
+
+    /**
+     * @return specification satisfied only if provided candidate is empty (applicable to Collection, Map or String)
+     */
+    public static final <T> Specification<T> empty() {
+        return EmptySpecification.INSTANCE;
     }
 
     /**
@@ -37,31 +65,54 @@ public final class Specifications {
     }
 
     /**
+     * @param value the value
+     * @return specification satisfied by candidates, which are equal to predefined value
+     */
+    public static final <T> Specification<T> isEqual(final T value) {
+        return new IsEqualSpecification<>(value);
+    }
+
+    /**
+     * @param regex the regular expression
+     * @return specification satisfied by candidates, which matches given regular expression
+     */
+    public static final Specification<CharSequence> matches(final String regex) {
+        return new RegexSpecification(regex);
+    }
+
+    /**
      * @return specification which will never be satisfied
      */
     public static final <T> Specification<T> never() {
-        return FalseSpecification.INSTANCE;
+        return new NotSpecification<>(TrueSpecification.INSTANCE);
     }
 
     /**
      * @return specification satisfied by character sequences holding at least one non-whitespace character
      */
     public static final Specification<CharSequence> notBlank() {
-        return BlankSpecification.NEGATION;
+        return new NotSpecification<>(BlankSpecification.INSTANCE);
     }
 
     /**
      * @return specification satisfied by candidates not being {@code null}
      */
     public static final <T> Specification<T> notNull() {
-        return NullSpecification.NEGATION;
+        return new NotSpecification<>(new IsEqualSpecification<T>(null));
     }
 
     /**
      * @return specification satisfied by candidates being {@code null}
      */
     public static final <T> Specification<T> nullValue() {
-        return NullSpecification.INSTANCE;
+        return new IsEqualSpecification<>(null);
+    }
+
+    /**
+     * @return specification satisfied if provided candidate is valid email address.
+     */
+    public static final Specification<String> validEmail() {
+        return ValidEmailSpecification.INSTANCE;
     }
 
     /**
