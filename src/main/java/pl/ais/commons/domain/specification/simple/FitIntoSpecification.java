@@ -9,7 +9,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class FitIntoSpecification implements Specification<CharSequence> {
+public final class FitIntoSpecification implements Specification<CharSequence> {
 
     private final int upperLimit;
 
