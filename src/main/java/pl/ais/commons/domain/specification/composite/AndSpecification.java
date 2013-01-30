@@ -1,5 +1,9 @@
 package pl.ais.commons.domain.specification.composite;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import pl.ais.commons.domain.specification.Specification;
 
 /**
@@ -21,6 +25,14 @@ public class AndSpecification<T> extends AbstractCompositeSpecification<T> {
     @SafeVarargs
     public AndSpecification(final Specification<T>... specifications) {
         this.specifications = specifications;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<? extends Specification<T>> getComponents() {
+        return Collections.unmodifiableList(Arrays.asList(specifications));
     }
 
     /**

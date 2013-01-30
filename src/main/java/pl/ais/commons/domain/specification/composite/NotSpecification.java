@@ -1,9 +1,13 @@
 package pl.ais.commons.domain.specification.composite;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import pl.ais.commons.domain.specification.Specification;
 
 /**
- * Composite specification being negation of other specification.
+ * Specification being negation of other specification.
  *
  * @param <T> determines the type of candidate
  * @author Warlock, AIS.PL
@@ -20,6 +24,14 @@ public class NotSpecification<T> extends AbstractCompositeSpecification<T> {
      */
     public NotSpecification(final Specification<T> specification) {
         this.specification = specification;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection<? extends Specification<T>> getComponents() {
+        return Collections.unmodifiableList(Arrays.asList(specification));
     }
 
     /**
