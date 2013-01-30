@@ -1,7 +1,6 @@
 package pl.ais.commons.domain.specification.simple;
 
 import pl.ais.commons.domain.specification.Specification;
-import pl.ais.commons.domain.specification.composite.NotSpecification;
 
 /**
  * {@link Specification} implementation which is satisfied only if character sequence is {@code null}, empty
@@ -16,11 +15,6 @@ public final class BlankSpecification implements Specification<CharSequence> {
      * Defines singleton instance of {@link BlankSpecification}.
      */
     public static final Specification<CharSequence> INSTANCE = new BlankSpecification();
-
-    /**
-     * Defines singleton instance of {@link BlankSpecification} negation.
-     */
-    public static final Specification<CharSequence> NEGATION = new NotSpecification<>(new BlankSpecification());
 
     /**
      * {@inheritDoc}
