@@ -1,5 +1,9 @@
 package pl.ais.commons.domain.specification.composite;
 
+import java.util.Collection;
+
+import javax.annotation.Nonnull;
+
 import pl.ais.commons.domain.specification.Specification;
 
 /**
@@ -17,11 +21,19 @@ public interface CompositeSpecification<T> extends Specification<T> {
      * @param other the other specification
      * @return the specification being conjunction of this one and the other
      */
-    Specification<T> and(Specification<T> other);
+    @Nonnull
+    Specification<T> and(@Nonnull Specification<T> other);
+
+    /**
+     * @return unmodifiable view of the components building this specification
+     */
+    @Nonnull
+    Collection<? extends Specification<T>> getComponents();
 
     /**
      * @return the specification being negation of this one
      */
+    @Nonnull
     Specification<T> not();
 
     /**
@@ -30,6 +42,7 @@ public interface CompositeSpecification<T> extends Specification<T> {
      * @param other the other specification
      * @return the specification being disjunction of this one and the other
      */
-    Specification<T> or(Specification<T> other);
+    @Nonnull
+    Specification<T> or(@Nonnull Specification<T> other);
 
 }
