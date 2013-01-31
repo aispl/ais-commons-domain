@@ -30,6 +30,6 @@ public final class BeforeSpecification<T extends Comparable<T>> implements Speci
      */
     @Override
     public boolean isSatisfiedBy(final T candidate) {
-        return (bound.compareTo(candidate) < 0);
+        return (bound.compareTo(candidate) > 0);
     }
 }
