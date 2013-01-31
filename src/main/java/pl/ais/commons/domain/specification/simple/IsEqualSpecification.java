@@ -30,7 +30,13 @@ public final class IsEqualSpecification<T> implements Specification<T> {
      */
     @Override
     public boolean isSatisfiedBy(final T candidate) {
-        return ((null == value) && (null == candidate)) || value.equals(candidate);
+        boolean result;
+        if (null == value) {
+            result = (null == candidate);
+        } else {
+            result = value.equals(candidate);
+        }
+        return result;
     }
 
 }
