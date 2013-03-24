@@ -1,21 +1,22 @@
 package pl.ais.commons.domain.specification.composite;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+
+import javax.annotation.concurrent.Immutable;
 
 import pl.ais.commons.domain.specification.Specification;
 
 /**
  * Composite specification being conjunction of other specifications.
  *
- * @param <T> determines the type of candidate
+ * @param <C> determines the type of candidate
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class AndSpecification<T> extends AbstractCompositeSpecification<T> {
+@Immutable
+public final class AndSpecification<C> extends AbstractCompositeSpecification<C> {
 
-    private final Specification<T>[] specifications;
+    private final Specification<C>[] specifications;
 
     /**
      * Constructs new instance.
@@ -23,7 +24,7 @@ public class AndSpecification<T> extends AbstractCompositeSpecification<T> {
      * @param specifications specifications for which we create conjunction
      */
     @SafeVarargs
-    public AndSpecification(final Specification<T>... specifications) {
+    public AndSpecification(final Specification<C>... specifications) {
         this.specifications = specifications;
     }
 
@@ -31,17 +32,17 @@ public class AndSpecification<T> extends AbstractCompositeSpecification<T> {
      * {@inheritDoc}
      */
     @Override
-    public Collection<? extends Specification<T>> getComponents() {
-        return Collections.unmodifiableList(Arrays.asList(specifications));
+    public Specification<C>[] getComponents() {
+        return Arrays.copyOf(specifications, specifications.length);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isSatisfiedBy(final T candidate) {
+    public <T extends C> boolean isSatisfiedBy(final T candidate) {
         boolean result = true;
-        for (Specification<T> specification : specifications) {
+        for (Specification<C> specification : specifications) {
             if (!specification.isSatisfiedBy(candidate)) {
                 result = false;
                 break;
