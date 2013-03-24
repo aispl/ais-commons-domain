@@ -1,29 +1,54 @@
 package pl.ais.commons.domain.specification.composite;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import pl.ais.commons.domain.specification.Specification;
 
 /**
  * Base class for composite specifications.
  *
- * @param <T> determines the type of candidate
+ * @param <C> determines the type of candidate
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public abstract class AbstractCompositeSpecification<T> implements CompositeSpecification<T> {
+abstract class AbstractCompositeSpecification<C> implements CompositeSpecification<C> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Specification<T> and(final Specification<T> other) {
+    public Specification<C> and(final Specification<C> other) {
         return new AndSpecification<>(this, other);
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("rawtypes")
     @Override
-    public Specification<T> not() {
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (null != object) && (getClass() == object.getClass())) {
+            final AbstractCompositeSpecification other = (AbstractCompositeSpecification) object;
+            result = ArrayUtils.isEquals(getComponents(), other.getComponents());
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getComponents()).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Specification<C> not() {
         return new NotSpecification<>(this);
     }
 
@@ -31,7 +56,7 @@ public abstract class AbstractCompositeSpecification<T> implements CompositeSpec
      * {@inheritDoc}
      */
     @Override
-    public Specification<T> or(final Specification<T> other) {
+    public Specification<C> or(final Specification<C> other) {
         return new OrSpecification<>(this, other);
     }
 
