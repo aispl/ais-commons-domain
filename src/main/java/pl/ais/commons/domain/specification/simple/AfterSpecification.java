@@ -7,20 +7,20 @@ import pl.ais.commons.domain.specification.Specification;
 /**
  * {@link Specification} implementation which is satisfied only if candidate is after predefined bound.
  *
- * @param <T> determines the type of candidate
+ * @param <C> determines the type of candidate
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public final class AfterSpecification<T extends Comparable<T>> implements Specification<T> {
+public final class AfterSpecification<C extends Comparable<? super C>> implements Specification<C> {
 
-    private final T bound;
+    private final C bound;
 
     /**
      * Constructs new instance.
      *
      * @param bound the bound
      */
-    public AfterSpecification(@Nonnull final T bound) {
+    public AfterSpecification(@Nonnull final C bound) {
         super();
         this.bound = bound;
     }
@@ -29,7 +29,7 @@ public final class AfterSpecification<T extends Comparable<T>> implements Specif
      * {@inheritDoc}
      */
     @Override
-    public boolean isSatisfiedBy(final T candidate) {
-        return (bound.compareTo(candidate) < 0);
+    public <T extends C> boolean isSatisfiedBy(final T candidate) {
+        return bound.compareTo(candidate) < 0;
     }
 }

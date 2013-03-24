@@ -1,26 +1,28 @@
 package pl.ais.commons.domain.specification.simple;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 
 import pl.ais.commons.domain.specification.Specification;
 
 /**
  * {@link Specification} implementation which is satisfied only if candidate is before predefined bound.
  *
- * @param <T> determines the type of candidate
+ * @param <C> determines the type of candidate
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public final class BeforeSpecification<T extends Comparable<T>> implements Specification<T> {
+@Immutable
+public final class BeforeSpecification<C extends Comparable<? super C>> implements Specification<C> {
 
-    private final T bound;
+    private final C bound;
 
     /**
      * Constructs new instance.
      *
      * @param bound the bound
      */
-    public BeforeSpecification(@Nonnull final T bound) {
+    public BeforeSpecification(@Nonnull final C bound) {
         super();
         this.bound = bound;
     }
@@ -29,7 +31,7 @@ public final class BeforeSpecification<T extends Comparable<T>> implements Speci
      * {@inheritDoc}
      */
     @Override
-    public boolean isSatisfiedBy(final T candidate) {
-        return (bound.compareTo(candidate) > 0);
+    public <T extends C> boolean isSatisfiedBy(final T candidate) {
+        return bound.compareTo(candidate) > 0;
     }
 }
