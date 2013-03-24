@@ -2,6 +2,8 @@ package pl.ais.commons.domain.specification.simple;
 
 import java.util.regex.Pattern;
 
+import javax.annotation.concurrent.Immutable;
+
 import pl.ais.commons.domain.specification.Specification;
 
 /**
@@ -10,7 +12,8 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class RegexSpecification implements Specification<CharSequence> {
+@Immutable
+public final class RegexSpecification implements Specification<CharSequence> {
 
     private final Pattern pattern;
 
@@ -28,7 +31,7 @@ public class RegexSpecification implements Specification<CharSequence> {
      * {@inheritDoc}
      */
     @Override
-    public boolean isSatisfiedBy(final CharSequence candidate) {
+    public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
         return (null != candidate) && pattern.matcher(candidate).matches();
     }
 }

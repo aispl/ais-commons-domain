@@ -1,5 +1,6 @@
 package pl.ais.commons.domain.specification.mail;
 
+import javax.annotation.concurrent.Immutable;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
@@ -11,23 +12,28 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public final class ValidEmailSpecification implements Specification<String> {
+@Immutable
+public final class ValidEmailSpecification implements Specification<CharSequence> {
 
     /**
      * Defines singleton instance of {@link ValidEmailSpecification}.
      */
-    public static final Specification<String> INSTANCE = new ValidEmailSpecification();
+    @SuppressWarnings("rawtypes")
+    public static final Specification INSTANCE = new ValidEmailSpecification();
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isSatisfiedBy(final String candidate) {
-        boolean result = true;
-        try {
-            new InternetAddress(candidate).validate();
-        } catch (final AddressException exception) {
-            result = false;
+    public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
+        boolean result = false;
+        if (null != candidate) {
+            try {
+                new InternetAddress(candidate.toString()).validate();
+                result = true;
+            } catch (final AddressException exception) {
+                // Ignore ...
+            }
         }
         return result;
     }

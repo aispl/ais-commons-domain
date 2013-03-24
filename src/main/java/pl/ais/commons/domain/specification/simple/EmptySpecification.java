@@ -3,6 +3,8 @@ package pl.ais.commons.domain.specification.simple;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.concurrent.Immutable;
+
 import pl.ais.commons.domain.specification.Specification;
 
 /**
@@ -13,11 +15,12 @@ import pl.ais.commons.domain.specification.Specification;
  *     candidate having neither of the above types (including {@code null}) will never satisfy this specification.
  * </p>
  *
- * @param <T> determines the type of candidate
+ * @param <C> determines the type of candidate
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public final class EmptySpecification<T> implements Specification<T> {
+@Immutable
+public final class EmptySpecification<C> implements Specification<C> {
 
     /**
      * Defines singleton instance of {@link EmptySpecification}.
@@ -30,7 +33,7 @@ public final class EmptySpecification<T> implements Specification<T> {
      */
     @SuppressWarnings("rawtypes")
     @Override
-    public boolean isSatisfiedBy(final T candidate) {
+    public <T extends C> boolean isSatisfiedBy(final T candidate) {
         boolean result = false;
         processing: {
             if (candidate instanceof Collection) {
