@@ -23,7 +23,7 @@ public final class Specifications {
      * @param bound the bound
      * @return specification satisfied only if candidate is after predefined bound
      */
-    public static final <T extends Comparable<T>> Specification<T> after(final T bound) {
+    public static final <T extends Comparable<? super T>> Specification<T> after(final T bound) {
         return new AfterSpecification<>(bound);
     }
 
@@ -38,14 +38,14 @@ public final class Specifications {
      * @param bound the bound
      * @return specification satisfied only if candidate is before predefined bound
      */
-    public static final <T extends Comparable<T>> Specification<T> before(final T bound) {
+    public static final <T extends Comparable<? super T>> Specification<T> before(final T bound) {
         return new BeforeSpecification<>(bound);
     }
 
     /**
      * @return specification satisfied by character sequences being {@code null}, empty or holding whitespaces only
      */
-    public static final Specification<CharSequence> blank() {
+    public static final <T extends CharSequence> Specification<T> blank() {
         return BlankSpecification.INSTANCE;
     }
 
@@ -60,8 +60,9 @@ public final class Specifications {
      * @param upperLimit the upper limit for character sequence length (inclusive)
      * @return specification satisfied by character sequences having length less or equal to given upper limit
      */
-    public static final Specification<CharSequence> fitInto(final int upperLimit) {
-        return new FitIntoSpecification(upperLimit);
+    @SuppressWarnings("unchecked")
+    public static final <T extends CharSequence> Specification<T> fitInto(final int upperLimit) {
+        return (Specification<T>) new FitIntoSpecification(upperLimit);
     }
 
     /**
@@ -76,8 +77,9 @@ public final class Specifications {
      * @param regex the regular expression
      * @return specification satisfied by candidates, which matches given regular expression
      */
-    public static final Specification<CharSequence> matches(final String regex) {
-        return new RegexSpecification(regex);
+    @SuppressWarnings("unchecked")
+    public static final <T extends CharSequence> Specification<T> matches(final String regex) {
+        return (Specification<T>) new RegexSpecification(regex);
     }
 
     /**
@@ -90,7 +92,7 @@ public final class Specifications {
     /**
      * @return specification satisfied by character sequences holding at least one non-whitespace character
      */
-    public static final Specification<CharSequence> notBlank() {
+    public static final <T extends CharSequence> Specification<T> notBlank() {
         return new NotSpecification<>(BlankSpecification.INSTANCE);
     }
 
@@ -111,7 +113,7 @@ public final class Specifications {
     /**
      * @return specification satisfied if provided candidate is valid email address.
      */
-    public static final Specification<String> validEmail() {
+    public static final <T extends CharSequence> Specification<T> validEmail() {
         return ValidEmailSpecification.INSTANCE;
     }
 
