@@ -1,8 +1,7 @@
 package pl.ais.commons.domain.specification.composite;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
-
-import javax.annotation.concurrent.Immutable;
 
 import pl.ais.commons.domain.specification.Specification;
 
@@ -13,7 +12,6 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-@Immutable
 public final class OrSpecification<C> extends AbstractCompositeSpecification<C> {
 
     private final Specification<C>[] specifications;
@@ -21,11 +19,14 @@ public final class OrSpecification<C> extends AbstractCompositeSpecification<C> 
     /**
      * Constructs new instance.
      *
-     * @param specifications specifications for which we create disjunction
+     * @param first first specification for which we create disjunction
+     * @param others other specifications for which we create disjunction
      */
     @SafeVarargs
-    public OrSpecification(final Specification<C>... specifications) {
-        this.specifications = specifications;
+    public OrSpecification(final Specification<C> first, final Specification<C>... others) {
+        this.specifications = (Specification<C>[]) Array.newInstance(first.getClass(), others.length + 1);
+        this.specifications[0] = first;
+        System.arraycopy(others, 0, this.specifications, 1, others.length);
     }
 
     /**
