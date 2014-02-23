@@ -2,12 +2,10 @@ package pl.ais.commons.domain.security;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nonnull;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import pl.ais.commons.domain.stereotype.ValueObject;
 
@@ -21,11 +19,20 @@ import pl.ais.commons.domain.stereotype.ValueObject;
 @ValueObject
 public final class DecryptableValue<T> implements Serializable {
 
+    /**
+     * Identifies the original class version for which it is capable of writing streams and from which it can read.
+     *
+     * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
+     */
+    private static final long serialVersionUID = 42804407628452076L;
+
     private transient T decryptedValue;
 
     private final CryptographicService<T> decryptor;
 
     private final byte[] encryptedValue;
+
+    private final ReentrantLock lock = new ReentrantLock();
 
     /**
      * Constructs new instance.
@@ -49,10 +56,15 @@ public final class DecryptableValue<T> implements Serializable {
      */
     @Nonnull
     public T decrypt() {
-        if (null == decryptedValue) {
-            decryptedValue = decryptor.decrypt(this);
+        lock.lock();
+        try {
+            if (null == decryptedValue) {
+                decryptedValue = decryptor.decrypt(this);
+            }
+            return decryptedValue;
+        } finally {
+            lock.unlock();
         }
-        return decryptedValue;
     }
 
     /**
@@ -64,8 +76,7 @@ public final class DecryptableValue<T> implements Serializable {
         boolean result = (this == object);
         if (!result && (null != object) && (getClass() == object.getClass())) {
             final DecryptableValue other = (DecryptableValue) object;
-            result = new EqualsBuilder().append(decryptor, other.decryptor)
-                .append(encryptedValue, other.encryptedValue).isEquals();
+            result = Objects.equals(decryptor, other.decryptor) && Objects.equals(encryptedValue, other.encryptedValue);
         }
         return result;
     }
@@ -83,7 +94,7 @@ public final class DecryptableValue<T> implements Serializable {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(decryptor).append(encryptedValue).toHashCode();
+        return Objects.hash(decryptor, encryptedValue);
     }
 
     /**
@@ -91,7 +102,7 @@ public final class DecryptableValue<T> implements Serializable {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("decryptor", decryptor).build();
+        return com.google.common.base.Objects.toStringHelper(this).add("decryptor", decryptor).toString();
     }
 
 }
