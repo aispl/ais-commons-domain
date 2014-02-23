@@ -1,6 +1,7 @@
 package pl.ais.commons.domain.specification.simple;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 
 import pl.ais.commons.domain.specification.Specification;
 
@@ -11,6 +12,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
+@Immutable
 public final class AfterSpecification<C extends Comparable<? super C>> implements Specification<C> {
 
     private final C bound;
@@ -22,6 +24,9 @@ public final class AfterSpecification<C extends Comparable<? super C>> implement
      */
     public AfterSpecification(@Nonnull final C bound) {
         super();
+        if (null == bound) {
+            throw new IllegalArgumentException("Bound is required.");
+        }
         this.bound = bound;
     }
 
