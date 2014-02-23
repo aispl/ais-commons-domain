@@ -24,6 +24,9 @@ public final class BeforeSpecification<C extends Comparable<? super C>> implemen
      */
     public BeforeSpecification(@Nonnull final C bound) {
         super();
+        if (null == bound) {
+            throw new IllegalArgumentException("Bound is required.");
+        }
         this.bound = bound;
     }
 
