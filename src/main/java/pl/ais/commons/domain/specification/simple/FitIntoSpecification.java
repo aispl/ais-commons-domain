@@ -2,10 +2,10 @@ package pl.ais.commons.domain.specification.simple;
 
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import pl.ais.commons.domain.specification.Specification;
+
+import com.google.common.base.Objects;
+import com.google.common.primitives.Ints;
 
 /**
  * {@link Specification} implementation which is satisfied only if provided character sequence length is limited
@@ -47,7 +47,7 @@ public final class FitIntoSpecification implements Specification<CharSequence> {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(upperLimit).toHashCode();
+        return Ints.hashCode(upperLimit);
     }
 
     /**
@@ -63,7 +63,7 @@ public final class FitIntoSpecification implements Specification<CharSequence> {
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("upperLimit", upperLimit).build();
+        return Objects.toStringHelper(this).add("upperLimit", upperLimit).toString();
     }
 
 }
