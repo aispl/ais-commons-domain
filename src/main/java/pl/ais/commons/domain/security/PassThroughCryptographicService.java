@@ -5,10 +5,9 @@ import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import pl.ais.commons.domain.stereotype.DomainService;
+
+import com.google.common.base.Objects;
 
 /**
  * Pass-through implementation of cryptographic service.
@@ -24,6 +23,13 @@ import pl.ais.commons.domain.stereotype.DomainService;
 @ThreadSafe
 @DomainService
 public final class PassThroughCryptographicService implements CryptographicService<String> {
+
+    /**
+     * Identifies the original class version for which it is capable of writing streams and from which it can read.
+     *
+     * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
+     */
+    private static final long serialVersionUID = -6476927894297927385L;
 
     private final String charsetName;
 
@@ -89,7 +95,7 @@ public final class PassThroughCryptographicService implements CryptographicServi
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(charsetName).toHashCode();
+        return charsetName.hashCode();
     }
 
     /**
@@ -97,7 +103,7 @@ public final class PassThroughCryptographicService implements CryptographicServi
      */
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("charsetName", charsetName).build();
+        return Objects.toStringHelper(this).add("charsetName", charsetName).toString();
     }
 
 }
