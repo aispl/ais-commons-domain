@@ -1,7 +1,8 @@
 package pl.ais.commons.domain.specification.composite;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.util.Arrays;
+
+import javax.annotation.concurrent.ThreadSafe;
 
 import pl.ais.commons.domain.specification.Specification;
 
@@ -12,6 +13,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
+@ThreadSafe
 abstract class AbstractCompositeSpecification<C> implements CompositeSpecification<C> {
 
     /**
@@ -31,7 +33,7 @@ abstract class AbstractCompositeSpecification<C> implements CompositeSpecificati
         boolean result = (this == object);
         if (!result && (null != object) && (getClass() == object.getClass())) {
             final AbstractCompositeSpecification other = (AbstractCompositeSpecification) object;
-            result = ArrayUtils.isEquals(getComponents(), other.getComponents());
+            result = Arrays.equals(getComponents(), other.getComponents());
         }
         return result;
     }
@@ -41,7 +43,7 @@ abstract class AbstractCompositeSpecification<C> implements CompositeSpecificati
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getComponents()).toHashCode();
+        return Arrays.hashCode(getComponents());
     }
 
     /**
