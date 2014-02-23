@@ -1,7 +1,5 @@
 package pl.ais.commons.domain.specification.composite;
 
-import javax.annotation.concurrent.Immutable;
-
 import pl.ais.commons.domain.specification.Specification;
 
 /**
@@ -11,7 +9,6 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-@Immutable
 public final class NotSpecification<C> extends AbstractCompositeSpecification<C> {
 
     private final Specification<C> specification;
