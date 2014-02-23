@@ -31,17 +31,16 @@ public final class EmptySpecification<C> implements Specification<C> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public <T extends C> boolean isSatisfiedBy(final T candidate) {
         boolean result = false;
         processing: {
             if (candidate instanceof Collection) {
-                result = ((Collection) candidate).isEmpty();
+                result = ((Collection<?>) candidate).isEmpty();
                 break processing;
             }
             if (candidate instanceof Map) {
-                result = ((Map) candidate).isEmpty();
+                result = ((Map<?, ?>) candidate).isEmpty();
                 break processing;
             }
             if (candidate instanceof String) {
