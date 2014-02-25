@@ -1,5 +1,6 @@
 package pl.ais.commons.domain.specification;
 
+import static junit.framework.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.BeforeClass;
@@ -11,7 +12,8 @@ import org.junit.Test;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class NullValueSpecificationTest {
+@SuppressWarnings("static-method")
+public class NullValueSpecificationExpectations {
 
     private static Specification<Object> specification;
 
@@ -36,6 +38,6 @@ public class NullValueSpecificationTest {
      */
     @Test
     public void shouldntBeSatisfiedByNonNullValue() {
-        assertThat("Specification shouldn't be satisfied by non-null value.", false == specification.isSatisfiedBy(""));
+        assertFalse("Specification shouldn't be satisfied by non-null value.", specification.isSatisfiedBy(""));
     }
 }

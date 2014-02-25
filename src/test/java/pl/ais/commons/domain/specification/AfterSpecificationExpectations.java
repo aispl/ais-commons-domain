@@ -1,5 +1,6 @@
 package pl.ais.commons.domain.specification;
 
+import static junit.framework.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.BeforeClass;
@@ -11,7 +12,8 @@ import org.junit.Test;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-public class GreaterThanTest {
+@SuppressWarnings("static-method")
+public class AfterSpecificationExpectations {
 
     private static Specification<Integer> specification;
 
@@ -37,8 +39,8 @@ public class GreaterThanTest {
      */
     @Test
     public void shouldntBeSatisfiedByEqualValue() {
-        assertThat("Specification shouldn't be satisfied by value equal to predefined bound.",
-            false == specification.isSatisfiedBy(Integer.valueOf(2)));
+        assertFalse("Specification shouldn't be satisfied by value equal to predefined bound.",
+            specification.isSatisfiedBy(Integer.valueOf(2)));
     }
 
     /**
@@ -46,7 +48,7 @@ public class GreaterThanTest {
      */
     @Test
     public void shouldntBeSatisfiedByLessValue() {
-        assertThat("Specification shouldn't be satisfied by value less than predefined bound.",
-            false == specification.isSatisfiedBy(Integer.valueOf(1)));
+        assertFalse("Specification shouldn't be satisfied by value less than predefined bound.",
+            specification.isSatisfiedBy(Integer.valueOf(1)));
     }
 }
