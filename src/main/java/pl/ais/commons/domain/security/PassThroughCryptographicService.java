@@ -20,6 +20,7 @@ import com.google.common.base.Objects;
  * @author Warlock, AIS.PL
  * @since 1.0.2
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 @ThreadSafe
 @DomainService
 public final class PassThroughCryptographicService implements CryptographicService<String> {

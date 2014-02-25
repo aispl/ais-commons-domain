@@ -25,9 +25,9 @@ public final class BlankSpecification implements Specification<CharSequence> {
      */
     @Override
     public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
-        final int length;
         boolean result = true;
-        if ((null != candidate) && (0 < (length = candidate.length()))) {
+        if (null != candidate) {
+            final int length = candidate.length();
             for (int i = 0; i < length; i++) {
                 if (!Character.isWhitespace(candidate.charAt(i))) {
                     result = false;
@@ -37,5 +37,4 @@ public final class BlankSpecification implements Specification<CharSequence> {
         }
         return result;
     }
-
 }

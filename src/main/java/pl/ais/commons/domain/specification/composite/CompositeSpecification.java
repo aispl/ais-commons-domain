@@ -44,6 +44,7 @@ public interface CompositeSpecification<C> extends Specification<C> {
      * @return the specification being disjunction of this one and the other
      */
     @Nonnull
+    @SuppressWarnings("PMD.ShortMethodName")
     Specification<C> or(@Nonnull Specification<C> other);
 
 }

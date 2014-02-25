@@ -16,6 +16,7 @@ import pl.ais.commons.domain.stereotype.ValueObject;
  * @author Warlock, AIS.PL
  * @since 1.0.2
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 @ValueObject
 public final class DecryptableValue<T> implements Serializable {
 

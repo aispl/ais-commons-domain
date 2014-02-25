@@ -13,6 +13,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @since 1.0.1
  */
 @Immutable
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public final class BeforeSpecification<C extends Comparable<? super C>> implements Specification<C> {
 
     private final C bound;

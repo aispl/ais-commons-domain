@@ -14,6 +14,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public final class AndSpecification<C> extends AbstractCompositeSpecification<C> {
 
     private final Specification<C>[] specifications;
@@ -26,6 +27,7 @@ public final class AndSpecification<C> extends AbstractCompositeSpecification<C>
      */
     @SafeVarargs
     public AndSpecification(@Nonnull final Specification<C> first, final Specification<C>... others) {
+        super();
         this.specifications = (Specification<C>[]) Array.newInstance(first.getClass(), others.length + 1);
         this.specifications[0] = first;
         System.arraycopy(others, 0, this.specifications, 1, others.length);
@@ -45,7 +47,7 @@ public final class AndSpecification<C> extends AbstractCompositeSpecification<C>
     @Override
     public <T extends C> boolean isSatisfiedBy(final T candidate) {
         boolean result = true;
-        for (Specification<C> specification : specifications) {
+        for (final Specification<C> specification : specifications) {
             if (!specification.isSatisfiedBy(candidate)) {
                 result = false;
                 break;

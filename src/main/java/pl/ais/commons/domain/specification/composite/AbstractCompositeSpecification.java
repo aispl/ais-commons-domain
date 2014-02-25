@@ -58,6 +58,7 @@ abstract class AbstractCompositeSpecification<C> implements CompositeSpecificati
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.ShortMethodName")
     public Specification<C> or(final Specification<C> other) {
         return new OrSpecification<>(this, other);
     }

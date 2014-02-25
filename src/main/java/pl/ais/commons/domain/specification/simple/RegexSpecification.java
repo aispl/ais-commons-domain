@@ -13,6 +13,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @since 1.0.1
  */
 @Immutable
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public final class RegexSpecification implements Specification<CharSequence> {
 
     private final Pattern pattern;

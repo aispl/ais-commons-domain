@@ -9,6 +9,7 @@ import pl.ais.commons.domain.specification.Specification;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public final class NotSpecification<C> extends AbstractCompositeSpecification<C> {
 
     private final Specification<C> specification;
@@ -19,6 +20,7 @@ public final class NotSpecification<C> extends AbstractCompositeSpecification<C>
      * @param specification specification for which we are creating negation
      */
     public NotSpecification(final Specification<C> specification) {
+        super();
         this.specification = specification;
     }
 

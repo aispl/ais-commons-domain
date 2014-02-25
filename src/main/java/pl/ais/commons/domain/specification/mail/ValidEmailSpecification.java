@@ -25,6 +25,7 @@ public final class ValidEmailSpecification implements Specification<CharSequence
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD.EmptyCatchBlock")
     public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
         boolean result = false;
         if (null != candidate) {

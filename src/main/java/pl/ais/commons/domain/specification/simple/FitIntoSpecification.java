@@ -14,6 +14,7 @@ import com.google.common.primitives.Ints;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 @Immutable
 public final class FitIntoSpecification implements Specification<CharSequence> {
 
