@@ -15,12 +15,12 @@ public interface DecryptableValue<T> {
      * @return decrypted value
      */
     @Nonnull
-    public T decrypt();
+    T decrypt();
 
     /**
      * @return encrypted value
      */
     @Nonnull
-    public byte[] getEncryptedValue();
+    byte[] getEncryptedValue();
 
 }

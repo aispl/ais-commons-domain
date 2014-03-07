@@ -15,6 +15,7 @@ import com.google.common.base.Preconditions;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class CryptographicServiceSupport<T> {
 
     private final Decryptor<T> decryptor;
