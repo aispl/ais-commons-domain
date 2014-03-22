@@ -25,6 +25,7 @@ public final class AndSpecification<C> extends AbstractCompositeSpecification<C>
      * @param first first specification for which we create conjunction
      * @param others other specifications for which we create conjunction
      */
+    @SuppressWarnings("unchecked")
     @SafeVarargs
     public AndSpecification(@Nonnull final Specification<C> first, final Specification<C>... others) {
         super();

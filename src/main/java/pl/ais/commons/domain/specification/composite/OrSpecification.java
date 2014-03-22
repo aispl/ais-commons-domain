@@ -23,6 +23,7 @@ public final class OrSpecification<C> extends AbstractCompositeSpecification<C> 
      * @param first first specification for which we create disjunction
      * @param others other specifications for which we create disjunction
      */
+    @SuppressWarnings("unchecked")
     @SafeVarargs
     public OrSpecification(final Specification<C> first, final Specification<C>... others) {
         super();
