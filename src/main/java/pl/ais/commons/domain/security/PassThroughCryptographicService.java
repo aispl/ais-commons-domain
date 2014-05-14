@@ -39,7 +39,12 @@ public final class PassThroughCryptographicService extends CryptographicServiceS
         this(charset.name());
     }
 
-    private PassThroughCryptographicService(final String charsetName) {
+    /**
+     * Constructs new instance.
+     *
+     * @param charsetName name of the charset which should be used for the string conversions
+     */
+    public PassThroughCryptographicService(final String charsetName) {
         super(new Decryptor<String>() {
 
             /**
