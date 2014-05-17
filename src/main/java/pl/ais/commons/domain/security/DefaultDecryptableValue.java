@@ -84,7 +84,7 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
         boolean result = (this == object);
         if (!result && (null != object) && (getClass() == object.getClass())) {
             final DefaultDecryptableValue other = (DefaultDecryptableValue) object;
-            result = Objects.equals(decryptor, other.decryptor) && Objects.equals(encryptedValue, other.encryptedValue);
+            result = Objects.equals(decryptor, other.decryptor) && Arrays.equals(encryptedValue, other.encryptedValue);
         }
         return result;
     }
@@ -103,7 +103,7 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
      */
     @Override
     public int hashCode() {
-        return Objects.hash(decryptor, encryptedValue);
+        return (31 * (31 + decryptor.hashCode())) + Arrays.hashCode(encryptedValue);
     }
 
 }
