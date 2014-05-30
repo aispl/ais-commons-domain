@@ -1,16 +1,23 @@
 package pl.ais.commons.domain.security;
 
-import com.google.common.base.Function;
+import javax.annotation.Nullable;
 
 /**
  * Defines the API contract for encryptor.
  *
- * @param <T> defines the type of unencrypted value
+ * @param <T> the type of unencrypted value
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
-public interface Encryptor<T> extends Function<T, DecryptableValue<T>> {
+public interface Encryptor<T> {
 
-    // Empty by design ...
+    /**
+     * Encrypts given value.
+     *
+     * @param value value to be encrypted
+     * @return encrypted value
+     */
+    @Nullable
+    DecryptableValue<T> encrypt(@Nullable T value);
 
 }
