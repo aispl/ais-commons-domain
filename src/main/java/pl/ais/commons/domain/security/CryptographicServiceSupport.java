@@ -1,14 +1,22 @@
 package pl.ais.commons.domain.security;
 
+import java.util.Objects;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 
 /**
- * Cryptographic service.
+ * Base class for cryptographic services.
  *
  * <p>
- *   This service delegates the encryption/decryption work to predefined {@link Encryptor} / {@link Decryptor}.
+ *   This implementation delegates the encryption/decryption work to predefined {@link Encryptor} / {@link Decryptor}.
+ * </p>
+ * <p>
+ *   Although this class is not serializable itself, subclasses of it can be made serializable using
+ *   <em>Serialization Proxy Pattern</em> - see: <em>Effective Java, Second Edition</em> by Joshua Bloch
+ *   (ISBN-13: 978-0-321-35668-0)
  * </p>
  *
  * @param <T> defines the type of unencrypted value
@@ -16,7 +24,7 @@ import com.google.common.base.Preconditions;
  * @since 1.1.1
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class CryptographicServiceSupport<T> {
+public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T> {
 
     private final Decryptor<T> decryptor;
 
@@ -28,7 +36,8 @@ public class CryptographicServiceSupport<T> {
      * @param decryptor to be used as decryption delegate
      * @param encryptor to be used as encryption delegate
      */
-    public CryptographicServiceSupport(@Nonnull final Decryptor<T> decryptor, @Nonnull final Encryptor<T> encryptor) {
+    protected CryptographicServiceSupport(@Nonnull final Decryptor<T> decryptor, @Nonnull final Encryptor<T> encryptor) {
+        super();
 
         // Validate constructor requirements, ...
         Preconditions.checkNotNull(decryptor, "Decryptor is required.");
@@ -40,35 +49,57 @@ public class CryptographicServiceSupport<T> {
     }
 
     /**
-     * Decrypts the value.
-     *
-     * @param decryptable the value to decrypt
-     * @return decrypted value
+     * {@inheritDoc}
      */
-    @Nonnull
-    public T decrypt(@Nonnull final DecryptableValue<T> decryptable) {
-
-        // Validate method requirements, ...
-        Preconditions.checkNotNull(decryptable, "Decryptable value should be provided.");
-
-        // ... and ask decryptor to do the dirty work.
-        return decryptor.apply(decryptable);
+    @Override
+    @Nullable
+    public T decrypt(@Nullable final DecryptableValue<T> decryptable) {
+        return decryptor.decrypt(decryptable);
     }
 
     /**
-     * Encrypts given value.
-     *
-     * @param encryptable the value to encrypt
-     * @return encrypted value
+     * {@inheritDoc}
      */
-    @Nonnull
-    public DecryptableValue<T> encrypt(@Nonnull final T encryptable) {
+    @Override
+    @Nullable
+    public DecryptableValue<T> encrypt(@Nullable final T encryptable) {
+        return encryptor.encrypt(encryptable);
+    }
 
-        // Validate method requirements, ...
-        Preconditions.checkNotNull(encryptable, "Encryptable value should be provided.");
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof CryptographicServiceSupport)) {
+            final CryptographicServiceSupport other = (CryptographicServiceSupport) object;
+            result = Objects.equals(decryptor, other.decryptor) && Objects.equals(encryptor, other.encryptor);
+        }
+        return result;
+    }
 
-        // ... and ask encryptor to do the dirty work.
-        return encryptor.apply(encryptable);
+    /**
+     * @return the decryptor
+     */
+    public Decryptor<T> getDecryptor() {
+        return decryptor;
+    }
+
+    /**
+     * @return the encryptor
+     */
+    public Encryptor<T> getEncryptor() {
+        return encryptor;
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(decryptor, encryptor);
     }
 
 }
