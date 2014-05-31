@@ -1,5 +1,10 @@
 package pl.ais.commons.domain.security;
 
+import static com.google.common.base.Objects.toStringHelper;
+
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -14,6 +19,10 @@ import com.google.common.base.Preconditions;
 /**
  * Default {@link DecryptableValue} implementation.
  *
+ * <p>
+ *   Instances of this class are serializable, if, and only if, used decryptor is serializable.
+ * </p>
+ *
  * @param <T> defines the type of unencrypted value
  * @author Warlock, AIS.PL
  * @since 1.0.2
@@ -27,14 +36,26 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
      *
      * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
      */
-    private static final long serialVersionUID = -2322451953123364855L;
+    private static final long serialVersionUID = 2452314922599538603L;
 
     private transient T decryptedValue;
 
+    /**
+     * Decryptor applicable for encrypted value decryption.
+     * @serial
+     */
     private final Decryptor<T> decryptor;
 
-    private final byte[] encryptedValue;
+    /**
+     * Encrypted value.
+     * @serial
+     */
+    private byte[] encryptedValue;
 
+    /**
+     * Lock used for decryption synchronization.
+     * @serial
+     */
     private final ReentrantLock lock = new ReentrantLock();
 
     /**
@@ -49,11 +70,11 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
 
         // Validate constructor requirements, ...
         Preconditions.checkNotNull(decryptor, "Decryptor is required.");
-        Preconditions.checkNotNull(encryptedValue, "Encrypted value should be provided.");
+        Preconditions.checkNotNull(encryptedValue, "Encrypted value is required.");
 
         // ... and initialize this instance fields.
         this.decryptor = decryptor;
-        this.encryptedValue = Arrays.copyOf(encryptedValue, encryptedValue.length);
+        this.encryptedValue = encryptedValue.clone();
     }
 
     /**
@@ -67,7 +88,7 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
         lock.lock();
         try {
             if (null == decryptedValue) {
-                decryptedValue = decryptor.apply(this);
+                decryptedValue = decryptor.decrypt(this);
             }
             return decryptedValue;
         } finally {
@@ -82,7 +103,7 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
     @Override
     public boolean equals(final Object object) {
         boolean result = (this == object);
-        if (!result && (null != object) && (getClass() == object.getClass())) {
+        if (!result && (object instanceof DefaultDecryptableValue)) {
             final DefaultDecryptableValue other = (DefaultDecryptableValue) object;
             result = Objects.equals(decryptor, other.decryptor) && Arrays.equals(encryptedValue, other.encryptedValue);
         }
@@ -95,7 +116,7 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
     @Nonnull
     @Override
     public byte[] getEncryptedValue() {
-        return Arrays.copyOf(encryptedValue, encryptedValue.length);
+        return encryptedValue.clone();
     }
 
     /**
@@ -103,7 +124,33 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
      */
     @Override
     public int hashCode() {
-        return (31 * (31 + decryptor.hashCode())) + Arrays.hashCode(encryptedValue);
+        return (31 * (527 + decryptor.hashCode())) + Arrays.hashCode(encryptedValue);
+    }
+
+    private void readObject(final ObjectInputStream stream)
+        throws IOException, ClassNotFoundException {
+
+        // Perform default de-serialization, ...
+        stream.defaultReadObject();
+
+        // ... defensive copy encrypted value, ...
+        this.encryptedValue = encryptedValue.clone();
+
+        // ... and validate the object state.
+        if (null == decryptor) {
+            throw new InvalidObjectException("Decryptor is required.");
+        }
+        if (null == encryptedValue) {
+            throw new InvalidObjectException("Encrypted value is required.");
+        }
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("decryptor", decryptor).add("encryptedValue", encryptedValue).toString();
     }
 
 }
