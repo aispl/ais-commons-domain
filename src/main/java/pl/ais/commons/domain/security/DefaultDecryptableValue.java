@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
  * Default {@link DecryptableValue} implementation.
  *
  * <p>
- *   Instances of this class are serializable, if, and only if, used decryptor is serializable.
+ *   Instances of this class are serializable, if, and only if, applicable decryptor is serializable.
  * </p>
  *
  * @param <T> defines the type of unencrypted value
