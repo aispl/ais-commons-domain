@@ -177,4 +177,16 @@ DecryptorProvider<String> {
         this(decryptor, new SerializableEncryptor(charsetName, decryptor));
     }
 
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof PassThroughCryptographicService)) {
+            result = equivalentOf((PassThroughCryptographicService) object);
+        }
+        return result;
+    }
+
 }
