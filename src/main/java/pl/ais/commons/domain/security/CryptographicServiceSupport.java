@@ -30,7 +30,7 @@ import com.google.common.base.Preconditions;
  * @author Warlock, AIS.PL
  * @since 1.1.1
  */
-@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.OverrideBothEqualsAndHashcode"})
 public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T> {
 
     private final Decryptor<T> decryptor;

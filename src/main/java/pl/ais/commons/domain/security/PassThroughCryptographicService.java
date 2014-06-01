@@ -21,10 +21,10 @@ import pl.ais.commons.domain.stereotype.DomainService;
  * @author Warlock, AIS.PL
  * @since 1.0.2
  */
-@SuppressWarnings("PMD.BeanMembersShouldSerialize")
+@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.OverrideBothEqualsAndHashcode"})
 @DomainService
 public final class PassThroughCryptographicService extends CryptographicServiceSupport<String> implements
-DecryptorProvider<String> {
+    DecryptorProvider<String> {
 
     private static final class SerializableDecryptor implements Decryptor<String>, Serializable {
 
