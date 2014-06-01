@@ -91,7 +91,7 @@ public final class Cipherer implements Encryptor<byte[]> {
                 } else {
                     cipher.init(Cipher.ENCRYPT_MODE, key);
                 }
-                return new DecipherableValue(new Decipherer(transformation, key), params.orNull(),
+                result = new DecipherableValue(new Decipherer(transformation, key), params.orNull(),
                     cipher.doFinal(input));
             } catch (GeneralSecurityException exception) {
                 throw Throwables.propagate(exception);
