@@ -41,6 +41,7 @@ DecryptorProvider<String> {
          * {@inheritDoc}
          */
         @Override
+        @SuppressWarnings("PMD.NullAssignment")
         public String decrypt(final DecryptableValue<String> value) {
             return (null == value) ? null : new String(value.getEncryptedValue(), Charset.forName(charsetName));
         }
@@ -94,6 +95,7 @@ DecryptorProvider<String> {
          * {@inheritDoc}
          */
         @Override
+        @SuppressWarnings("PMD.NullAssignment")
         public DecryptableValue<String> encrypt(final String value) {
             return (null == value) ? null : new DefaultDecryptableValue<>(decryptor, value.getBytes(Charset
                 .forName(charsetName)));
