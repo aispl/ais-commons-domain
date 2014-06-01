@@ -1,5 +1,7 @@
 package pl.ais.commons.domain.security;
 
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -100,6 +102,14 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
     @Override
     public int hashCode() {
         return Objects.hash(decryptor, encryptor);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("decryptor", decryptor).add("encryptor", encryptor).toString();
     }
 
 }
