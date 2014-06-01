@@ -17,7 +17,8 @@ import com.google.common.base.Preconditions;
  * </p>
  * <p>
  *   Note that this class overrides {@link #hashCode()} method, but still uses default {@link Object#equals(Object)}
- *   method. You should override this method yourself, when extending this class.
+ *   method. You should override this method yourself, when extending this class. Consider using {@code equivalentOf}
+ *   method to achieve this task.
  * </p>
  * <p>
  *   Although this class is not serializable itself, subclasses of it can be made serializable using
