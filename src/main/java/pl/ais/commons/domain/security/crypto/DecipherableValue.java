@@ -1,7 +1,9 @@
 package pl.ais.commons.domain.security.crypto;
 
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.Arrays;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -14,7 +16,7 @@ import pl.ais.commons.domain.security.DecryptableValue;
  * @since 1.1.1
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class DecipherableValue implements DecryptableValue<byte[]> {
+public final class DecipherableValue implements DecryptableValue<byte[]> {
 
     private final Decipherer decipherer;
 
@@ -33,7 +35,7 @@ public class DecipherableValue implements DecryptableValue<byte[]> {
         @Nonnull final byte[] encryptedValue) {
         this.decipherer = decipherer;
         this.params = params;
-        this.encryptedValue = Arrays.copyOf(encryptedValue, encryptedValue.length);
+        this.encryptedValue = encryptedValue.clone();
     }
 
     /**
@@ -41,7 +43,21 @@ public class DecipherableValue implements DecryptableValue<byte[]> {
      */
     @Override
     public byte[] decrypt() {
-        return decipherer.withParams(params).apply(this);
+        return decipherer.withParams(params).decrypt(this);
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof DecipherableValue)) {
+            final DecipherableValue other = (DecipherableValue) object;
+            result = Objects.equals(decipherer, other.decipherer) && Objects.equals(params, other.params)
+                && Objects.equals(encryptedValue, other.encryptedValue);
+        }
+        return result;
     }
 
     /**
@@ -49,7 +65,23 @@ public class DecipherableValue implements DecryptableValue<byte[]> {
      */
     @Override
     public byte[] getEncryptedValue() {
-        return Arrays.copyOf(encryptedValue, encryptedValue.length);
+        return encryptedValue.clone();
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(decipherer, params, encryptedValue);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("decipherer", decipherer).toString();
     }
 
 }

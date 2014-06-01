@@ -1,10 +1,14 @@
 package pl.ais.commons.domain.security.crypto;
 
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.Cipher;
 
 import pl.ais.commons.domain.security.Encryptor;
@@ -21,7 +25,7 @@ import com.google.common.base.Throwables;
  * @since 1.1.1
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public class Cipherer implements Encryptor<byte[]> {
+public final class Cipherer implements Encryptor<byte[]> {
 
     private final Key key;
 
@@ -30,6 +34,8 @@ public class Cipherer implements Encryptor<byte[]> {
     private final String transformation;
 
     /**
+     * Constructs new instance.
+     *
      * @param transformation the name of the transformation.
      *        See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
      *        for information about standard transformation names.
@@ -40,6 +46,8 @@ public class Cipherer implements Encryptor<byte[]> {
     }
 
     /**
+     * Constructs new instance.
+     *
      * @param transformation the name of the transformation.
      *        See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
      *        for information about standard transformation names.
@@ -68,19 +76,58 @@ public class Cipherer implements Encryptor<byte[]> {
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
-    public DecipherableValue apply(@Nonnull final byte[] input) {
-        final Cipher cipher;
-        try {
-            cipher = Cipher.getInstance(transformation);
-            if (params.isPresent()) {
-                cipher.init(Cipher.ENCRYPT_MODE, key, params.get());
-            } else {
-                cipher.init(Cipher.ENCRYPT_MODE, key);
+    public DecipherableValue encrypt(@Nullable final byte[] input) {
+        final DecipherableValue result;
+        if (null == input) {
+            result = null;
+        } else {
+            final Cipher cipher;
+            try {
+                cipher = Cipher.getInstance(transformation);
+                if (params.isPresent()) {
+                    cipher.init(Cipher.ENCRYPT_MODE, key, params.get());
+                } else {
+                    cipher.init(Cipher.ENCRYPT_MODE, key);
+                }
+                return new DecipherableValue(new Decipherer(transformation, key), params.orNull(),
+                    cipher.doFinal(input));
+            } catch (GeneralSecurityException exception) {
+                throw Throwables.propagate(exception);
             }
-            return new DecipherableValue(new Decipherer(transformation, key), params.orNull(), cipher.doFinal(input));
-        } catch (GeneralSecurityException exception) {
-            throw Throwables.propagate(exception);
         }
+        return result;
     }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof Cipherer)) {
+            final Cipherer other = (Cipherer) object;
+            result = Objects.equals(transformation, other.transformation) && Objects.equals(key, other.key)
+                && Objects.equals(params, other.params);
+        }
+        return result;
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(transformation, key, params);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("transformation", transformation).toString();
+    }
+
 }

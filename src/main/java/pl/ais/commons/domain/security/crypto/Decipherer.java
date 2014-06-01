@@ -1,10 +1,14 @@
 package pl.ais.commons.domain.security.crypto;
 
+import static com.google.common.base.Objects.toStringHelper;
+
 import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.Cipher;
 
 import pl.ais.commons.domain.security.DecryptableValue;
@@ -31,6 +35,8 @@ public final class Decipherer implements Decryptor<byte[]> {
     private final String transformation;
 
     /**
+     * Constructs new instance.
+     *
      * @param transformation the name of the transformation.
      *        See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
      *        for information about standard transformation names.
@@ -41,6 +47,8 @@ public final class Decipherer implements Decryptor<byte[]> {
     }
 
     /**
+     * Constructs new instance.
+     *
      * @param transformation the name of the transformation.
      *        See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
      *        for information about standard transformation names.
@@ -67,20 +75,57 @@ public final class Decipherer implements Decryptor<byte[]> {
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
-    public byte[] apply(@Nonnull final DecryptableValue<byte[]> input) {
-        Cipher cipher;
-        try {
-            cipher = Cipher.getInstance(transformation);
-            if (params.isPresent()) {
-                cipher.init(Cipher.DECRYPT_MODE, key, params.get());
-            } else {
-                cipher.init(Cipher.DECRYPT_MODE, key);
+    public byte[] decrypt(@Nullable final DecryptableValue<byte[]> input) {
+        final byte[] result;
+        if (null == input) {
+            result = null;
+        } else {
+            Cipher cipher;
+            try {
+                cipher = Cipher.getInstance(transformation);
+                if (params.isPresent()) {
+                    cipher.init(Cipher.DECRYPT_MODE, key, params.get());
+                } else {
+                    cipher.init(Cipher.DECRYPT_MODE, key);
+                }
+                result = cipher.doFinal(input.getEncryptedValue());
+            } catch (GeneralSecurityException exception) {
+                throw Throwables.propagate(exception);
             }
-            return cipher.doFinal(input.getEncryptedValue());
-        } catch (GeneralSecurityException exception) {
-            throw Throwables.propagate(exception);
         }
+        return result;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof Decipherer)) {
+            final Decipherer other = (Decipherer) object;
+            result = Objects.equals(transformation, other.transformation) && Objects.equals(key, other.key)
+                && Objects.equals(params, other.params);
+        }
+        return result;
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(transformation, key, params);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return toStringHelper(this).add("transformation", transformation).toString();
     }
 
     /**
@@ -90,8 +135,8 @@ public final class Decipherer implements Decryptor<byte[]> {
      * @return newly created decipherer instance with given algorithm parameters applied
      */
     @SuppressWarnings("hiding")
-    public Decipherer withParams(@Nonnull final AlgorithmParameterSpec params) {
-        return new Decipherer(transformation, key, Optional.of(params));
+    public Decipherer withParams(@Nullable final AlgorithmParameterSpec params) {
+        return new Decipherer(transformation, key, Optional.fromNullable(params));
     }
 
 }
