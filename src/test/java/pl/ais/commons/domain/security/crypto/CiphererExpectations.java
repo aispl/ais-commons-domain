@@ -40,7 +40,7 @@ public class CiphererExpectations {
         final String unencrypted = "Adenosine diphosphate";
         final Cipherer cipherer = new Cipherer("AES/CBC/PKCS5Padding", getSecretKey(), new IvParameterSpec(
             randomCIV(16)));
-        final DecipherableValue encrypted = cipherer.apply(unencrypted.getBytes());
+        final DecipherableValue encrypted = cipherer.encrypt(unencrypted.getBytes());
 
         // ... when we decrypt the value, ...
         final String decrypted = new String(encrypted.decrypt());
