@@ -16,6 +16,10 @@ import com.google.common.base.Preconditions;
  *   This implementation delegates the encryption/decryption work to predefined {@link Encryptor} / {@link Decryptor}.
  * </p>
  * <p>
+ *   Note that this class overrides {@link #hashCode()} method, but still uses default {@link Object#equals(Object)}
+ *   method. You should override this method yourself, when extending this class.
+ * </p>
+ * <p>
  *   Although this class is not serializable itself, subclasses of it can be made serializable using
  *   <em>Serialization Proxy Pattern</em> - see: <em>Effective Java, Second Edition</em> by Joshua Bloch
  *   (ISBN-13: 978-0-321-35668-0)
@@ -51,7 +55,9 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
     }
 
     /**
-     * {@inheritDoc}
+     * Decrypts given value.
+     *
+     * <p>This implementation delegates the decryption process to the {@code decoder}.</p>
      */
     @Override
     @Nullable
@@ -60,7 +66,9 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
     }
 
     /**
-     * {@inheritDoc}
+     * Encrypts given value.
+     *
+     * <p>This implementation delegates the encryption process to the {@code encoder}.</p>
      */
     @Override
     @Nullable
@@ -69,17 +77,14 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Verifies if this instance is equivalent of given {@code object}.
+     *
+     * @return {@code true} if decryptor/encryptor pair used by this instance and given {@code object} are the same,
+     *         {@code false} otherwise
      */
     @SuppressWarnings("rawtypes")
-    @Override
-    public boolean equals(final Object object) {
-        boolean result = (this == object);
-        if (!result && (object instanceof CryptographicServiceSupport)) {
-            final CryptographicServiceSupport other = (CryptographicServiceSupport) object;
-            result = Objects.equals(decryptor, other.decryptor) && Objects.equals(encryptor, other.encryptor);
-        }
-        return result;
+    protected boolean equivalentOf(final CryptographicServiceSupport service) {
+        return Objects.equals(decryptor, service.decryptor) && Objects.equals(encryptor, service.encryptor);
     }
 
     /**
@@ -97,7 +102,9 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
     }
 
     /**
-     * @see java.lang.Object#hashCode()
+     * Returns a hash code value for the object.
+     *
+     * <p>This implementation computes hash code based on {@code decryptor} and {@code encryptor} hash codes.</p>
      */
     @Override
     public int hashCode() {
@@ -105,7 +112,11 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * Returns a string representation of the object.
+     *
+     * <p>
+     *   This implementation includes both {@code decryptor} and {@code encryptor} string representations in the result.
+     * </p>
      */
     @Override
     public String toString() {
