@@ -1,7 +1,8 @@
 package pl.ais.commons.domain.security;
 
-import static com.google.common.base.Objects.toStringHelper;
+import pl.ais.commons.domain.stereotype.ValueObject;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -10,17 +11,13 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.annotation.Nonnull;
-
-import pl.ais.commons.domain.stereotype.ValueObject;
-
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Default {@link DecryptableValue} implementation.
  *
  * <p>
- *   Instances of this class are serializable, if, and only if, applicable decryptor is serializable.
+ * Instances of this class are serializable, if, and only if, applicable decryptor is serializable.
  * </p>
  *
  * @param <T> defines the type of unencrypted value
@@ -36,45 +33,59 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
      *
      * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
      */
-    private static final long serialVersionUID = 2452314922599538603L;
-
-    private transient T decryptedValue;
+    private static final long serialVersionUID = -4691786449141212409L;
 
     /**
      * Decryptor applicable for encrypted value decryption.
+     *
      * @serial
      */
     private final Decryptor<T> decryptor;
 
     /**
+     * Lock used for decryption synchronization.
+     *
+     * @serial
+     */
+    private final ReentrantLock lock = new ReentrantLock();
+
+    private transient T decryptedValue;
+
+    /**
      * Encrypted value.
+     *
      * @serial
      */
     private byte[] encryptedValue;
 
     /**
-     * Lock used for decryption synchronization.
-     * @serial
-     */
-    private final ReentrantLock lock = new ReentrantLock();
-
-    /**
      * Constructs new instance.
      *
-     * @param decryptor decryptor which will be used to decrypt value
+     * @param decryptor      decryptor which will be used to decrypt value
      * @param encryptedValue encrypted value, which will be enclosed by the created instance
      */
-    public DefaultDecryptableValue(@Nonnull final Decryptor<T> decryptor,
-        @Nonnull final byte[] encryptedValue) {
+    protected DefaultDecryptableValue(@Nonnull final Decryptor<T> decryptor,
+                                      @Nonnull final byte[] encryptedValue) {
         super();
 
         // Validate constructor requirements, ...
-        Preconditions.checkNotNull(decryptor, "Decryptor is required.");
-        Preconditions.checkNotNull(encryptedValue, "Encrypted value is required.");
+        Objects.requireNonNull(decryptor, "Decryptor is required.");
+        Objects.requireNonNull(encryptedValue, "Encrypted value is required.");
 
         // ... and initialize this instance fields.
         this.decryptor = decryptor;
         this.encryptedValue = encryptedValue.clone();
+    }
+
+    /**
+     * Returns factory creating {@link DefaultDecryptableValue} instances using provided decryptor.
+     *
+     * @param decryptor decryptor which will be used by decryptable values created by returned factory
+     * @return factory creating {@link DefaultDecryptableValue} instances using provided decryptor
+     */
+    public static <T> DecryptableValueFactory<T, DefaultDecryptableValue<T>> factory(
+        @Nonnull final Decryptor<T> decryptor) {
+        return new Factory<>(decryptor);
     }
 
     /**
@@ -133,16 +144,16 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
         // Perform default de-serialization, ...
         stream.defaultReadObject();
 
-        // ... defensive copy encrypted value, ...
-        this.encryptedValue = encryptedValue.clone();
-
-        // ... and validate the object state.
+        // ... validate the object state, ...
         if (null == decryptor) {
             throw new InvalidObjectException("Decryptor is required.");
         }
         if (null == encryptedValue) {
             throw new InvalidObjectException("Encrypted value is required.");
         }
+
+        // ... and defensive copy encrypted value
+        this.encryptedValue = encryptedValue.clone();
     }
 
     /**
@@ -151,6 +162,35 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
     @Override
     public String toString() {
         return toStringHelper(this).add("decryptor", decryptor).add("encryptedValue", encryptedValue).toString();
+    }
+
+    private static class Factory<T> implements DecryptableValueFactory<T, DefaultDecryptableValue<T>> {
+
+        private final Decryptor<T> decryptor;
+
+        /**
+         * Constructs new instance.
+         *
+         * @param decryptor decryptor which will be applied to decryptable values created by this factory
+         */
+        protected Factory(@Nonnull final Decryptor<T> decryptor) {
+            super();
+
+            // Validate constructor requirements, ...
+            Objects.requireNonNull(decryptor, "Decryptor is required.");
+
+            // ... and initialize this instance fields.
+            this.decryptor = decryptor;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public DefaultDecryptableValue<T> decryptableValue(final byte[] representation) {
+            return new DefaultDecryptableValue<>(decryptor, representation);
+        }
+
     }
 
 }

@@ -1,14 +1,13 @@
 package pl.ais.commons.domain.security;
 
-import static com.google.common.base.Objects.toStringHelper;
+import pl.ais.commons.domain.stereotype.DomainService;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-
-import pl.ais.commons.domain.stereotype.DomainService;
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Pass-through implementation of cryptographic service.
@@ -23,114 +22,7 @@ import pl.ais.commons.domain.stereotype.DomainService;
  */
 @SuppressWarnings({"PMD.BeanMembersShouldSerialize", "PMD.OverrideBothEqualsAndHashcode"})
 @DomainService
-public final class PassThroughCryptographicService extends CryptographicServiceSupport<String> implements
-    DecryptorProvider<String> {
-
-    private static final class SerializableDecryptor implements Decryptor<String>, Serializable {
-
-        private static final long serialVersionUID = -1730706243212998934L;
-
-        private final String charsetName;
-
-        SerializableDecryptor(final String charsetName) {
-            super();
-            this.charsetName = charsetName;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("PMD.NullAssignment")
-        public String decrypt(final DecryptableValue<String> value) {
-            return (null == value) ? null : new String(value.getEncryptedValue(), Charset.forName(charsetName));
-        }
-
-        /**
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        @Override
-        public boolean equals(final Object object) {
-            boolean result = (this == object);
-            if (!result && (object instanceof SerializableDecryptor)) {
-                final SerializableDecryptor other = (SerializableDecryptor) object;
-                result = Objects.equals(charsetName, other.charsetName);
-            }
-            return result;
-        }
-
-        /**
-         * @see java.lang.Object#hashCode()
-         */
-        @Override
-        public int hashCode() {
-            return charsetName.hashCode();
-        }
-
-        /**
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return toStringHelper(this).add("charsetName", charsetName).toString();
-        }
-
-    }
-
-    private static final class SerializableEncryptor implements Encryptor<String>, Serializable {
-
-        private static final long serialVersionUID = 7202178379823648202L;
-
-        private final String charsetName;
-
-        private final Decryptor<String> decryptor;
-
-        SerializableEncryptor(final String charsetName, final Decryptor<String> decryptor) {
-            super();
-            this.charsetName = charsetName;
-            this.decryptor = decryptor;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        @SuppressWarnings("PMD.NullAssignment")
-        public DecryptableValue<String> encrypt(final String value) {
-            return (null == value) ? null : new DefaultDecryptableValue<>(decryptor, value.getBytes(Charset
-                .forName(charsetName)));
-        }
-
-        /**
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        @Override
-        public boolean equals(final Object object) {
-            boolean result = (this == object);
-            if (!result && (object instanceof SerializableEncryptor)) {
-                final SerializableEncryptor other = (SerializableEncryptor) object;
-                result = Objects.equals(charsetName, other.charsetName);
-            }
-            return result;
-        }
-
-        /**
-         * @see java.lang.Object#hashCode()
-         */
-        @Override
-        public int hashCode() {
-            return charsetName.hashCode();
-        }
-
-        /**
-         * @see java.lang.Object#toString()
-         */
-        @Override
-        public String toString() {
-            return toStringHelper(this).add("charsetName", charsetName).toString();
-        }
-
-    }
+public final class PassThroughCryptographicService extends CryptographicServiceSupport<String> {
 
     /**
      * Constructs new instance using default charset of this JVM for the string conversions.
@@ -187,6 +79,112 @@ public final class PassThroughCryptographicService extends CryptographicServiceS
             result = equivalentOf((PassThroughCryptographicService) object);
         }
         return result;
+    }
+
+    private static final class SerializableDecryptor implements Decryptor<String>, Serializable {
+
+        private static final long serialVersionUID = 1590923514790474301L;
+
+        private final String charsetName;
+
+        SerializableDecryptor(final String charsetName) {
+            super();
+            this.charsetName = charsetName;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("PMD.NullAssignment")
+        public String decrypt(final DecryptableValue<String> value) {
+            return (null == value) ? null : new String(value.getEncryptedValue(), Charset.forName(charsetName));
+        }
+
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        @Override
+        public boolean equals(final Object object) {
+            boolean result = (this == object);
+            if (!result && (object instanceof SerializableDecryptor)) {
+                final SerializableDecryptor other = (SerializableDecryptor) object;
+                result = Objects.equals(charsetName, other.charsetName);
+            }
+            return result;
+        }
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        @Override
+        public int hashCode() {
+            return charsetName.hashCode();
+        }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return toStringHelper(this).add("charsetName", charsetName).toString();
+        }
+
+    }
+
+    private static final class SerializableEncryptor implements Encryptor<String>, Serializable {
+
+        private static final long serialVersionUID = -8598810770587310048L;
+
+        private final String charsetName;
+
+        private final Decryptor<String> decryptor;
+
+        SerializableEncryptor(final String charsetName, final Decryptor<String> decryptor) {
+            super();
+            this.charsetName = charsetName;
+            this.decryptor = decryptor;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        @SuppressWarnings("PMD.NullAssignment")
+        public DecryptableValue<String> encrypt(final String value) {
+            return (null == value) ? null : DefaultDecryptableValue.factory(decryptor).decryptableValue(
+                value.getBytes(Charset.forName(charsetName)));
+        }
+
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        @Override
+        public boolean equals(final Object object) {
+            boolean result = (this == object);
+            if (!result && (object instanceof SerializableEncryptor)) {
+                final SerializableEncryptor other = (SerializableEncryptor) object;
+                result = Objects.equals(charsetName, other.charsetName);
+            }
+            return result;
+        }
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        @Override
+        public int hashCode() {
+            return charsetName.hashCode();
+        }
+
+        /**
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return toStringHelper(this).add("charsetName", charsetName).toString();
+        }
+
     }
 
 }
