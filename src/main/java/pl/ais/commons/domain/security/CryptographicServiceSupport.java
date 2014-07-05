@@ -1,13 +1,10 @@
 package pl.ais.commons.domain.security;
 
-import static com.google.common.base.Objects.toStringHelper;
-
-import java.util.Objects;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Objects.toStringHelper;
 
 /**
  * Base class for cryptographic services.
@@ -47,8 +44,8 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
         super();
 
         // Validate constructor requirements, ...
-        Preconditions.checkNotNull(decryptor, "Decryptor is required.");
-        Preconditions.checkNotNull(encryptor, "Encryptor is required.");
+        Objects.requireNonNull(decryptor, "Decryptor is required.");
+        Objects.requireNonNull(encryptor, "Encryptor is required.");
 
         // ... and initialize this instance fields.
         this.decryptor = decryptor;

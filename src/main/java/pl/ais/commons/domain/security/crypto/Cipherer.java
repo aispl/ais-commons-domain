@@ -1,7 +1,6 @@
 package pl.ais.commons.domain.security.crypto;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import pl.ais.commons.domain.security.Encryptor;
 
@@ -61,9 +60,9 @@ public final class Cipherer implements Encryptor<byte[]> {
                      @Nonnull final Optional<AlgorithmParameterSpec> params) {
 
         // Verify constructor requirements, ...
-        Preconditions.checkNotNull(transformation, "Transformation is required.");
-        Preconditions.checkNotNull(key, "Key is required.");
-        Preconditions.checkNotNull(params, "Params are required");
+        Objects.requireNonNull(transformation, "Transformation is required.");
+        Objects.requireNonNull(key, "Key is required.");
+        Objects.requireNonNull(params, "Params are required");
 
         // ... and initialize this instance fields.
         this.key = key;
