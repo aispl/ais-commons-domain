@@ -3,5 +3,5 @@
 /.project
 /.settings
 /target
-
-
+atlassian-ide-plugin.xml
+ais-commons-domain.iml
