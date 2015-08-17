@@ -3,30 +3,25 @@ package pl.ais.commons.domain.specification.mail;
 import javax.annotation.concurrent.Immutable;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
-import pl.ais.commons.domain.specification.Specification;
+import java.util.function.Predicate;
 
 /**
- * {@link Specification} implementation which is satisfied if provided candidate is valid email address.
+ * {@link Predicate} implementation which is satisfied if provided candidate is valid email address.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
 @Immutable
-public final class ValidEmailSpecification implements Specification<CharSequence> {
+public final class ValidEmailSpecification implements Predicate<CharSequence> {
 
     /**
      * Defines singleton instance of {@link ValidEmailSpecification}.
      */
     @SuppressWarnings("rawtypes")
-    public static final Specification INSTANCE = new ValidEmailSpecification();
+    public static final Predicate INSTANCE = new ValidEmailSpecification();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    @SuppressWarnings("PMD.EmptyCatchBlock")
-    public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
+    public boolean test(final CharSequence candidate) {
         boolean result = false;
         if (null != candidate) {
             try {

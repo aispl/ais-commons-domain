@@ -1,7 +1,5 @@
 package pl.ais.commons.domain.specification.composite;
 
-import pl.ais.commons.domain.specification.Specification;
-
 /**
  * Specification being negation of other specification.
  *

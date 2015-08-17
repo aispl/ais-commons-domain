@@ -2,8 +2,6 @@ package pl.ais.commons.domain.specification.composite;
 
 import javax.annotation.Nonnull;
 
-import pl.ais.commons.domain.specification.Specification;
-
 /**
  * Defines the API contract for composite specification.
  *

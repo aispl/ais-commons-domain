@@ -3,8 +3,6 @@ package pl.ais.commons.domain.specification.composite;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-import pl.ais.commons.domain.specification.Specification;
-
 /**
  * Composite specification being disjunction of other specifications.
  *

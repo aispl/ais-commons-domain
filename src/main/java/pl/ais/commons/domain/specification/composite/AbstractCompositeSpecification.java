@@ -4,8 +4,6 @@ import java.util.Arrays;
 
 import javax.annotation.concurrent.ThreadSafe;
 
-import pl.ais.commons.domain.specification.Specification;
-
 /**
  * Base class for composite specifications.
  *

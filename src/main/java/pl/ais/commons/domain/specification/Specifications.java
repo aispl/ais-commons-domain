@@ -1,18 +1,16 @@
 package pl.ais.commons.domain.specification;
 
-import pl.ais.commons.domain.specification.composite.NotSpecification;
 import pl.ais.commons.domain.specification.mail.ValidEmailSpecification;
 import pl.ais.commons.domain.specification.simple.AfterSpecification;
 import pl.ais.commons.domain.specification.simple.BeforeSpecification;
-import pl.ais.commons.domain.specification.simple.BlankSpecification;
 import pl.ais.commons.domain.specification.simple.EmptySpecification;
 import pl.ais.commons.domain.specification.simple.FitIntoSpecification;
-import pl.ais.commons.domain.specification.simple.IsEqualSpecification;
 import pl.ais.commons.domain.specification.simple.RegexSpecification;
-import pl.ais.commons.domain.specification.simple.TrueSpecification;
+
+import java.util.function.Predicate;
 
 /**
- * Provides set of useful {@link Specification} implementations.
+ * Provides set of useful {@link Predicate} implementations.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
@@ -24,36 +22,36 @@ public final class Specifications {
      * @param bound the bound
      * @return specification satisfied only if candidate is after predefined bound
      */
-    public static <T extends Comparable<? super T>> Specification<T> after(final T bound) {
+    public static <T extends Comparable<? super T>> Predicate<T> after(final T bound) {
         return new AfterSpecification<>(bound);
     }
 
     /**
      * @return specification satisfied by any candidate
      */
-    public static <T> Specification<T> always() {
-        return TrueSpecification.INSTANCE;
+    public static <T> Predicate<T> always() {
+        return candidate -> true;
     }
 
     /**
      * @param bound the bound
      * @return specification satisfied only if candidate is before predefined bound
      */
-    public static <T extends Comparable<? super T>> Specification<T> before(final T bound) {
+    public static <T extends Comparable<? super T>> Predicate<T> before(final T bound) {
         return new BeforeSpecification<>(bound);
     }
 
     /**
      * @return specification satisfied by character sequences being {@code null}, empty or holding whitespaces only
      */
-    public static <T extends CharSequence> Specification<T> blank() {
-        return BlankSpecification.INSTANCE;
+    public static <T extends CharSequence> Predicate<T> blank() {
+        return candidate -> (null == candidate) || candidate.chars().allMatch(Character::isWhitespace);
     }
 
     /**
      * @return specification satisfied only if provided candidate is empty (applicable to Collection, Map or String)
      */
-    public static <T> Specification<T> empty() {
+    public static <T> Predicate<T> empty() {
         return EmptySpecification.INSTANCE;
     }
 
@@ -62,16 +60,16 @@ public final class Specifications {
      * @return specification satisfied by character sequences having length less or equal to given upper limit
      */
     @SuppressWarnings("unchecked")
-    public static <T extends CharSequence> Specification<T> fitInto(final int upperLimit) {
-        return (Specification<T>) new FitIntoSpecification(upperLimit);
+    public static <T extends CharSequence> Predicate<T> fitInto(final int upperLimit) {
+        return (Predicate<T>) new FitIntoSpecification(upperLimit);
     }
 
     /**
      * @param value the value
      * @return specification satisfied by candidates, which are equal to predefined value
      */
-    public static <T> Specification<T> isEqual(final T value) {
-        return new IsEqualSpecification<>(value);
+    public static <T> Predicate<T> isEqual(final T value) {
+        return Predicate.isEqual(value);
     }
 
     /**
@@ -79,42 +77,42 @@ public final class Specifications {
      * @return specification satisfied by candidates, which matches given regular expression
      */
     @SuppressWarnings("unchecked")
-    public static <T extends CharSequence> Specification<T> matches(final String regex) {
-        return (Specification<T>) new RegexSpecification(regex);
+    public static <T extends CharSequence> Predicate<T> matches(final String regex) {
+        return (Predicate<T>) new RegexSpecification(regex);
     }
 
     /**
      * @return specification which will never be satisfied
      */
-    public static <T> Specification<T> never() {
-        return new NotSpecification<>(TrueSpecification.INSTANCE);
+    public static <T> Predicate<T> never() {
+        return candidate -> false;
     }
 
     /**
      * @return specification satisfied by character sequences holding at least one non-whitespace character
      */
-    public static <T extends CharSequence> Specification<T> notBlank() {
-        return new NotSpecification<>(BlankSpecification.INSTANCE);
+    public static <T extends CharSequence> Predicate<T> notBlank() {
+        return Specifications.<T>blank().negate();
     }
 
     /**
      * @return specification satisfied by candidates not being {@code null}
      */
-    public static <T> Specification<T> notNull() {
-        return new NotSpecification<>(new IsEqualSpecification<T>(null));
+    public static <T> Predicate<T> notNull() {
+        return candidate -> null != candidate;
     }
 
     /**
      * @return specification satisfied by candidates being {@code null}
      */
-    public static <T> Specification<T> nullValue() {
-        return new IsEqualSpecification<>(null);
+    public static <T> Predicate<T> nullValue() {
+        return candidate -> null == candidate;
     }
 
     /**
      * @return specification satisfied if provided candidate is valid email address.
      */
-    public static <T extends CharSequence> Specification<T> validEmail() {
+    public static <T extends CharSequence> Predicate<T> validEmail() {
         return ValidEmailSpecification.INSTANCE;
     }
 

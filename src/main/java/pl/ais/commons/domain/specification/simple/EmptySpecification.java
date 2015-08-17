@@ -1,18 +1,16 @@
 package pl.ais.commons.domain.specification.simple;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.Collection;
 import java.util.Map;
-
-import javax.annotation.concurrent.Immutable;
-
-import pl.ais.commons.domain.specification.Specification;
+import java.util.function.Predicate;
 
 /**
  * Specification implementation which is satisfied only if provided candidate is empty.
  *
  * <p>
- *     Note, that this specification can be applied to either Collection, Map or String values;
- *     candidate having neither of the above types (including {@code null}) will never satisfy this specification.
+ * Note, that this specification can be applied to either Collection, Map or String values;
+ * candidate having neither of the above types (including {@code null}) will never satisfy this specification.
  * </p>
  *
  * @param <C> determines the type of candidate
@@ -20,27 +18,25 @@ import pl.ais.commons.domain.specification.Specification;
  * @since 1.0.1
  */
 @Immutable
-public final class EmptySpecification<C> implements Specification<C> {
+public final class EmptySpecification<C> implements Predicate<C> {
 
     /**
      * Defines singleton instance of {@link EmptySpecification}.
      */
     @SuppressWarnings("rawtypes")
-    public static final Specification INSTANCE = new EmptySpecification();
+    public static final Predicate INSTANCE = new EmptySpecification();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <T extends C> boolean isSatisfiedBy(final T candidate) {
+    public boolean test(final C candidate) {
         boolean result = false;
-        processing: {
+        processing:
+        {
             if (candidate instanceof Collection) {
-                result = ((Collection<?>) candidate).isEmpty();
+                result = ((Collection) candidate).isEmpty();
                 break processing;
             }
             if (candidate instanceof Map) {
-                result = ((Map<?, ?>) candidate).isEmpty();
+                result = ((Map) candidate).isEmpty();
                 break processing;
             }
             if (candidate instanceof String) {

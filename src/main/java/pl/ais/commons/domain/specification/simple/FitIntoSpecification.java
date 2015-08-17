@@ -1,14 +1,11 @@
 package pl.ais.commons.domain.specification.simple;
 
 import javax.annotation.concurrent.Immutable;
-
-import pl.ais.commons.domain.specification.Specification;
-
-import com.google.common.base.Objects;
-import com.google.common.primitives.Ints;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
- * {@link Specification} implementation which is satisfied only if provided character sequence length is limited
+ * {@link Predicate} implementation which is satisfied only if provided character sequence length is limited
  * to predefined number of characters, or the character sequence is {@code null}.
  *
  * @author Warlock, AIS.PL
@@ -16,7 +13,7 @@ import com.google.common.primitives.Ints;
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
 @Immutable
-public final class FitIntoSpecification implements Specification<CharSequence> {
+public final class FitIntoSpecification implements Predicate<CharSequence> {
 
     private final int upperLimit;
 
@@ -48,23 +45,12 @@ public final class FitIntoSpecification implements Specification<CharSequence> {
      */
     @Override
     public int hashCode() {
-        return Ints.hashCode(upperLimit);
+        return Objects.hashCode(upperLimit);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
+    public boolean test(final CharSequence candidate) {
         return (null == candidate) || (candidate.length() <= upperLimit);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return Objects.toStringHelper(this).add("upperLimit", upperLimit).toString();
     }
 
 }

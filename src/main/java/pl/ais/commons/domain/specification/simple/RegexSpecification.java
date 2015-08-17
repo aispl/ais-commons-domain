@@ -1,20 +1,18 @@
 package pl.ais.commons.domain.specification.simple;
 
+import javax.annotation.concurrent.Immutable;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-import javax.annotation.concurrent.Immutable;
-
-import pl.ais.commons.domain.specification.Specification;
-
 /**
- * {@link Specification} implementation satisfied when candidate matches predefined regular expression.
+ * {@link Predicate} implementation satisfied when candidate matches predefined regular expression.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
 @Immutable
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public final class RegexSpecification implements Specification<CharSequence> {
+public final class RegexSpecification implements Predicate<CharSequence> {
 
     private final Pattern pattern;
 
@@ -28,11 +26,9 @@ public final class RegexSpecification implements Specification<CharSequence> {
         this.pattern = Pattern.compile(regex);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <T extends CharSequence> boolean isSatisfiedBy(final T candidate) {
+    public boolean test(final CharSequence candidate) {
         return (null != candidate) && pattern.matcher(candidate).matches();
     }
+
 }

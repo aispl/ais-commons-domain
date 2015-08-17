@@ -2,11 +2,10 @@ package pl.ais.commons.domain.specification.simple;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
-
-import pl.ais.commons.domain.specification.Specification;
+import java.util.function.Predicate;
 
 /**
- * {@link Specification} implementation which is satisfied only if candidate is before predefined bound.
+ * {@link Predicate} implementation which is satisfied only if candidate is before predefined bound.
  *
  * @param <C> determines the type of candidate
  * @author Warlock, AIS.PL
@@ -14,7 +13,7 @@ import pl.ais.commons.domain.specification.Specification;
  */
 @Immutable
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
-public final class BeforeSpecification<C extends Comparable<? super C>> implements Specification<C> {
+public final class BeforeSpecification<C extends Comparable<? super C>> implements Predicate<C> {
 
     private final C bound;
 
@@ -31,11 +30,9 @@ public final class BeforeSpecification<C extends Comparable<? super C>> implemen
         this.bound = bound;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public <T extends C> boolean isSatisfiedBy(final T candidate) {
+    public boolean test(final C candidate) {
         return bound.compareTo(candidate) > 0;
     }
+
 }

@@ -5,8 +5,6 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import pl.ais.commons.domain.specification.Specification;
-
 /**
  * Composite specification being conjunction of other specifications.
  *
