@@ -1,13 +1,15 @@
 package pl.ais.commons.domain.specification;
 
-import static junit.framework.Assert.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.function.Predicate;
+
+import static junit.framework.Assert.assertFalse;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
- * Verifies the behavior of {@link Specification} created by {@link Specifications#nullValue()}.
+ * Verifies the behavior of {@link Predicate} created by {@link Specifications#nullValue()}.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
@@ -15,7 +17,7 @@ import org.junit.Test;
 @SuppressWarnings("static-method")
 public class NullValueSpecificationExpectations {
 
-    private static Specification<Object> specification;
+    private static Predicate<Object> specification;
 
     /**
      * Initializes the specification instance.
@@ -30,7 +32,7 @@ public class NullValueSpecificationExpectations {
      */
     @Test
     public void shouldBeSatisfiedByNullValue() {
-        assertThat("Specification should be satisfied by null value.", specification.isSatisfiedBy(null));
+        assertThat("Specification should be satisfied by null value.", specification.test(null));
     }
 
     /**
@@ -38,6 +40,6 @@ public class NullValueSpecificationExpectations {
      */
     @Test
     public void shouldntBeSatisfiedByNonNullValue() {
-        assertFalse("Specification shouldn't be satisfied by non-null value.", specification.isSatisfiedBy(""));
+        assertFalse("Specification shouldn't be satisfied by non-null value.", specification.test(""));
     }
 }

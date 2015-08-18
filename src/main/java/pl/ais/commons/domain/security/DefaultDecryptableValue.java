@@ -11,8 +11,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.google.common.base.Objects.toStringHelper;
-
 /**
  * Default {@link DecryptableValue} implementation.
  *
@@ -31,7 +29,8 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
     /**
      * Identifies the original class version for which it is capable of writing streams and from which it can read.
      *
-     * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes Affecting Serialization</a>
+     * @see <a href="http://docs.oracle.com/javase/7/docs/platform/serialization/spec/version.html#6678">Type Changes
+     * Affecting Serialization</a>
      */
     private static final long serialVersionUID = -4691786449141212409L;
 
@@ -161,7 +160,11 @@ public final class DefaultDecryptableValue<T> implements DecryptableValue<T>, Se
      */
     @Override
     public String toString() {
-        return toStringHelper(this).add("decryptor", decryptor).add("encryptedValue", encryptedValue).toString();
+        return new StringBuilder().append("Decryptable value with hashCode: ")
+                                  .append(encryptedValue.hashCode())
+                                  .append(", serviced by ")
+                                  .append(decryptor)
+                                  .toString();
     }
 
     private static class Factory<T> implements DecryptableValueFactory<T, DefaultDecryptableValue<T>> {

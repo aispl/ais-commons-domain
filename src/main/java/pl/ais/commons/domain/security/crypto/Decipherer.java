@@ -1,7 +1,5 @@
 package pl.ais.commons.domain.security.crypto;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Throwables;
 import pl.ais.commons.domain.security.DecryptableValue;
 import pl.ais.commons.domain.security.Decryptor;
 
@@ -12,14 +10,14 @@ import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Objects;
-
-import static com.google.common.base.Objects.toStringHelper;
+import java.util.Optional;
 
 /**
  * {@link Decryptor} implementation based on Java Cryptography Architecture (JCA).
  *
  * @author Warlock, AIS.PL
- * @see <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html">Java Cryptography Architecture (JCA)</a>
+ * @see <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/crypto/CryptoSpec.html">Java
+ * Cryptography Architecture (JCA)</a>
  * @since 1.1.1
  */
 @SuppressWarnings("PMD.BeanMembersShouldSerialize")
@@ -35,19 +33,21 @@ public final class Decipherer implements Decryptor<byte[]> {
      * Constructs new instance.
      *
      * @param transformation the name of the transformation.
-     *                       See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
+     *                       See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java
+     *                       Cryptography Architecture Standard Algorithm Name Documentation</a>
      *                       for information about standard transformation names.
      * @param key            the encryption key
      */
     public Decipherer(@Nonnull final String transformation, @Nonnull final Key key) {
-        this(transformation, key, Optional.<AlgorithmParameterSpec>absent());
+        this(transformation, key, Optional.empty());
     }
 
     /**
      * Constructs new instance.
      *
      * @param transformation the name of the transformation.
-     *                       See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java Cryptography Architecture Standard Algorithm Name Documentation</a>
+     *                       See the Cipher section in the <a href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Java
+     *                       Cryptography Architecture Standard Algorithm Name Documentation</a>
      *                       for information about standard transformation names.
      * @param key            the encryption key
      * @param params         the algorithm parameters
@@ -89,7 +89,7 @@ public final class Decipherer implements Decryptor<byte[]> {
                 }
                 result = cipher.doFinal(input.getEncryptedValue());
             } catch (GeneralSecurityException exception) {
-                throw Throwables.propagate(exception);
+                throw new RuntimeException(exception);
             }
         }
         return result;
@@ -122,7 +122,9 @@ public final class Decipherer implements Decryptor<byte[]> {
      */
     @Override
     public String toString() {
-        return toStringHelper(this).add("transformation", transformation).toString();
+        return new StringBuilder().append("Decipherer using transformation ")
+                                  .append(transformation)
+                                  .toString();
     }
 
     /**
@@ -133,7 +135,7 @@ public final class Decipherer implements Decryptor<byte[]> {
      */
     @SuppressWarnings("hiding")
     public Decipherer withParams(@Nullable final AlgorithmParameterSpec params) {
-        return new Decipherer(transformation, key, Optional.fromNullable(params));
+        return new Decipherer(transformation, key, Optional.ofNullable(params));
     }
 
 }

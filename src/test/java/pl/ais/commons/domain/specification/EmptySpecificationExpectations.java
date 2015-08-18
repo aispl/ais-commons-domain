@@ -1,17 +1,18 @@
 package pl.ais.commons.domain.specification;
 
-import static junit.framework.Assert.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.Predicate;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static junit.framework.Assert.assertFalse;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Verifies the behavior of {@link Specification} created by {@link Specifications#empty()} method.
+ * Verifies the behavior of {@link Predicate} created by {@link Specifications#empty()} method.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
@@ -19,7 +20,7 @@ import org.junit.Test;
 @SuppressWarnings("static-method")
 public class EmptySpecificationExpectations {
 
-    private static Specification<Object> specification;
+    private static Predicate<Object> specification;
 
     /**
      * Initializes the specification instance.
@@ -35,7 +36,7 @@ public class EmptySpecificationExpectations {
     @Test
     public void shouldBeSatisfiedByEmptyCollection() {
         assertThat("Specification should be satisfied by empty collection.",
-            specification.isSatisfiedBy(Collections.emptyList()));
+            specification.test(Collections.emptyList()));
     }
 
     /**
@@ -44,7 +45,7 @@ public class EmptySpecificationExpectations {
     @Test
     public void shouldBeSatisfiedByEmptyMap() {
         assertThat("Specification should be satisfied by empty map.",
-            specification.isSatisfiedBy(Collections.emptyMap()));
+            specification.test(Collections.emptyMap()));
     }
 
     /**
@@ -52,7 +53,7 @@ public class EmptySpecificationExpectations {
      */
     @Test
     public void shouldBeSatisfiedByEmptyString() {
-        assertThat("Specification should be satisfied by empty string.", specification.isSatisfiedBy(""));
+        assertThat("Specification should be satisfied by empty string.", specification.test(""));
     }
 
     /**
@@ -61,7 +62,7 @@ public class EmptySpecificationExpectations {
     @Test
     public void shouldntBeSatisfiedByNotEmptyCollection() {
         assertFalse("Specification shouldn't be satisfied by not empty collection.",
-            specification.isSatisfiedBy(Collections.singleton("")));
+            specification.test(Collections.singleton("")));
     }
 
     /**
@@ -70,7 +71,7 @@ public class EmptySpecificationExpectations {
     @Test
     public void shouldntBeSatisfiedByNotEmptyMap() {
         assertFalse("Specification shouldn't be satisfied by not empty map.",
-            specification.isSatisfiedBy(Collections.singletonMap("key", "value")));
+            specification.test(Collections.singletonMap("key", "value")));
     }
 
     /**
@@ -79,7 +80,7 @@ public class EmptySpecificationExpectations {
     @Test
     public void shouldntBeSatisfiedByNotEmptyString() {
         assertFalse("Specification shouldn't be satisfied by not empty string.",
-            specification.isSatisfiedBy("not empty string"));
+            specification.test("not empty string"));
     }
 
 }

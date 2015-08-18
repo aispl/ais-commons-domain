@@ -8,8 +8,6 @@ import javax.annotation.Nullable;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Objects;
 
-import static com.google.common.base.Objects.toStringHelper;
-
 /**
  * Decipherable value.
  *
@@ -94,7 +92,11 @@ public final class DecipherableValue implements DecryptableValue<byte[]> {
      */
     @Override
     public String toString() {
-        return toStringHelper(this).add("decipherer", decipherer).toString();
+        return new StringBuilder().append("Decipherable value with hashCode: ")
+                                  .append(encryptedValue.hashCode())
+                                  .append(", serviced by ")
+                                  .append(decipherer)
+                                  .toString();
     }
 
     private static class Factory implements DecryptableValueFactory<byte[], DecipherableValue> {

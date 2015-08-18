@@ -4,23 +4,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-import static com.google.common.base.Objects.toStringHelper;
-
 /**
  * Base class for cryptographic services.
  *
  * <p>
- *   This implementation delegates the encryption/decryption work to predefined {@link Encryptor} / {@link Decryptor}.
+ * This implementation delegates the encryption/decryption work to predefined {@link Encryptor} / {@link Decryptor}.
  * </p>
  * <p>
- *   Note that this class overrides {@link #hashCode()} method, but still uses default {@link Object#equals(Object)}
- *   method. You should override this method yourself, when extending this class. Consider using {@code equivalentOf}
- *   method to achieve this task.
+ * Note that this class overrides {@link #hashCode()} method, but still uses default {@link Object#equals(Object)}
+ * method. You should override this method yourself, when extending this class. Consider using {@code equivalentOf}
+ * method to achieve this task.
  * </p>
  * <p>
- *   Although this class is not serializable itself, subclasses of it can be made serializable using
- *   <em>Serialization Proxy Pattern</em> - see: <em>Effective Java, Second Edition</em> by Joshua Bloch
- *   (ISBN-13: 978-0-321-35668-0)
+ * Although this class is not serializable itself, subclasses of it can be made serializable using
+ * <em>Serialization Proxy Pattern</em> - see: <em>Effective Java, Second Edition</em> by Joshua Bloch
+ * (ISBN-13: 978-0-321-35668-0)
  * </p>
  *
  * @param <T> defines the type of unencrypted value
@@ -78,7 +76,7 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
      * Verifies if this instance is equivalent of given {@code object}.
      *
      * @return {@code true} if decryptor/encryptor pair used by this instance and given {@code object} are the same,
-     *         {@code false} otherwise
+     * {@code false} otherwise
      */
     @SuppressWarnings("rawtypes")
     protected boolean equivalentOf(final CryptographicServiceSupport service) {
@@ -113,12 +111,16 @@ public class CryptographicServiceSupport<T> implements Decryptor<T>, Encryptor<T
      * Returns a string representation of the object.
      *
      * <p>
-     *   This implementation includes both {@code decryptor} and {@code encryptor} string representations in the result.
+     * This implementation includes both {@code decryptor} and {@code encryptor} string representations in the result.
      * </p>
      */
     @Override
     public String toString() {
-        return toStringHelper(this).add("decryptor", decryptor).add("encryptor", encryptor).toString();
+        return new StringBuilder().append("Cryptographic service using decryptor ")
+                                  .append(decryptor)
+                                  .append(" and encryptor ")
+                                  .append(encryptor)
+                                  .toString();
     }
 
 }

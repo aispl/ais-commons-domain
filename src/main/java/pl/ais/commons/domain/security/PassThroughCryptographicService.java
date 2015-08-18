@@ -7,14 +7,12 @@ import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
-import static com.google.common.base.Objects.toStringHelper;
-
 /**
  * Pass-through implementation of cryptographic service.
  *
  * <p>
- *     This implementation in fact doesn't perform any encryption. Returned {@link DecryptableValue} holds
- *     the unencrypted data passed through.
+ * This implementation in fact doesn't perform any encryption. Returned {@link DecryptableValue} holds
+ * the unencrypted data passed through.
  * </p>
  *
  * @author Warlock, AIS.PL
@@ -63,7 +61,7 @@ public final class PassThroughCryptographicService extends CryptographicServiceS
      * Constructs new instance.
      *
      * @param charsetName name of the charset which should be used for the string conversions
-     * @param decryptor decryptor to be used
+     * @param decryptor   decryptor to be used
      */
     private PassThroughCryptographicService(final String charsetName, final Decryptor<String> decryptor) {
         this(decryptor, new SerializableEncryptor(charsetName, decryptor));
@@ -127,7 +125,9 @@ public final class PassThroughCryptographicService extends CryptographicServiceS
          */
         @Override
         public String toString() {
-            return toStringHelper(this).add("charsetName", charsetName).toString();
+            return new StringBuilder().append("Pass through decryptor using charset ")
+                                      .append(charsetName)
+                                      .toString();
         }
 
     }
@@ -182,7 +182,9 @@ public final class PassThroughCryptographicService extends CryptographicServiceS
          */
         @Override
         public String toString() {
-            return toStringHelper(this).add("charsetName", charsetName).toString();
+            return new StringBuilder().append("Pass through encryptor using charset ")
+                                      .append(charsetName)
+                                      .toString();
         }
 
     }

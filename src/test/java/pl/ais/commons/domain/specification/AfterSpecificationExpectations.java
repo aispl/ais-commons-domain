@@ -1,13 +1,15 @@
 package pl.ais.commons.domain.specification;
 
-import static junit.framework.Assert.assertFalse;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.function.Predicate;
+
+import static junit.framework.Assert.assertFalse;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
- * Verifies the behavior of {@link Specification} created using {@link Specifications#after(Comparable)} method.
+ * Verifies the behavior of {@link Predicate} created using {@link Specifications#after(Comparable)} method.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
@@ -15,7 +17,7 @@ import org.junit.Test;
 @SuppressWarnings("static-method")
 public class AfterSpecificationExpectations {
 
-    private static Specification<Integer> specification;
+    private static Predicate<Integer> specification;
 
     /**
      * Initializes the specification instance.
@@ -31,7 +33,7 @@ public class AfterSpecificationExpectations {
     @Test
     public void shouldBeSatisfiedByGreaterValue() {
         assertThat("Specification should be satisfied by value greater than predefined bound.",
-            specification.isSatisfiedBy(Integer.valueOf(10)));
+            specification.test(Integer.valueOf(10)));
     }
 
     /**
@@ -40,7 +42,7 @@ public class AfterSpecificationExpectations {
     @Test
     public void shouldntBeSatisfiedByEqualValue() {
         assertFalse("Specification shouldn't be satisfied by value equal to predefined bound.",
-            specification.isSatisfiedBy(Integer.valueOf(2)));
+            specification.test(Integer.valueOf(2)));
     }
 
     /**
@@ -49,6 +51,6 @@ public class AfterSpecificationExpectations {
     @Test
     public void shouldntBeSatisfiedByLessValue() {
         assertFalse("Specification shouldn't be satisfied by value less than predefined bound.",
-            specification.isSatisfiedBy(Integer.valueOf(1)));
+            specification.test(Integer.valueOf(1)));
     }
 }
