@@ -74,6 +74,7 @@ public final class Decipherer implements Decryptor<byte[]> {
      */
     @Nullable
     @Override
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public byte[] decrypt(@Nullable final DecryptableValue<byte[]> input) {
         final byte[] result;
         if (null == input) {

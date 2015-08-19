@@ -21,6 +21,7 @@ public final class ValidEmailSpecification implements Predicate<CharSequence> {
     public static final Predicate INSTANCE = new ValidEmailSpecification();
 
     @Override
+    @SuppressWarnings("PMD.EmptyCatchBlock")
     public boolean test(final CharSequence candidate) {
         boolean result = false;
         if (null != candidate) {

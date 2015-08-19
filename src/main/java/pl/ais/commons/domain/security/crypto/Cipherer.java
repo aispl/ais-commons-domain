@@ -75,6 +75,7 @@ public final class Cipherer implements Encryptor<byte[]> {
      */
     @Nullable
     @Override
+    @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
     public DecipherableValue encrypt(@Nullable final byte[] input) {
         final DecipherableValue result;
         if (null == input) {
