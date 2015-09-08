@@ -35,4 +35,14 @@ public final class AfterSpecification<C extends Comparable<? super C>> implement
         return bound.compareTo(candidate) < 0;
     }
 
+    /**
+     * @return a String representation of this specification
+     */
+    @Override
+    public String toString() {
+        return new StringBuilder().append("Is greater than ")
+                                  .append(bound)
+                                  .toString();
+    }
+
 }

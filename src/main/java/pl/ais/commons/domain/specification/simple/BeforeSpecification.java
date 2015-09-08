@@ -35,4 +35,14 @@ public final class BeforeSpecification<C extends Comparable<? super C>> implemen
         return bound.compareTo(candidate) > 0;
     }
 
+    /**
+     * @return a String representation of this specification
+     */
+    @Override
+    public String toString() {
+        return new StringBuilder().append("Is less than ")
+                                  .append(bound)
+                                  .toString();
+    }
+
 }
