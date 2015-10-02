@@ -2,6 +2,7 @@ package pl.ais.commons.domain.specification.simple;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -28,6 +29,27 @@ public final class BeforeSpecification<C extends Comparable<? super C>> implemen
             throw new IllegalArgumentException("Bound is required.");
         }
         this.bound = bound;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     */
+    @Override
+    public boolean equals(final Object object) {
+        boolean result = (this == object);
+        if (!result && (object instanceof BeforeSpecification)) {
+            final BeforeSpecification other = (BeforeSpecification) object;
+            result = Objects.equals(bound, other.bound);
+        }
+        return result;
+    }
+
+    /**
+     * @return a hash code value for this specification
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(bound);
     }
 
     @Override
