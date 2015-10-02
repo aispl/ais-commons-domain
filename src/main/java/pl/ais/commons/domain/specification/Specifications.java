@@ -15,8 +15,10 @@ import java.util.function.Predicate;
  * @author Warlock, AIS.PL
  * @since 1.0.1
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "PMD.TooManyMethods"})
 public final class Specifications {
+
+    private static final Predicate<CharSequence> NOT_BLANK = blank().negate();
 
     /**
      * @param bound the bound
@@ -92,7 +94,7 @@ public final class Specifications {
      * @return specification satisfied by character sequences holding at least one non-whitespace character
      */
     public static <T extends CharSequence> Predicate<T> notBlank() {
-        return Specifications.<T>blank().negate();
+        return (Predicate<T>) NOT_BLANK;
     }
 
     /**
