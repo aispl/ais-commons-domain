@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -28,6 +29,23 @@ public class EmptySpecificationExpectations {
     @BeforeClass
     public static void beforeAll() {
         specification = Specifications.empty();
+    }
+
+    /**
+     * Verifies if the specification is descriptive ({@link #toString()} method provides human readable specification
+     * description).
+     */
+    @Test
+    public void shouldBeDescriptive() {
+        assertEquals("Specification should be descriptive.", "Is empty", specification.toString());
+    }
+
+    /**
+     * Verifies if two instances returned by {@link Specifications#empty()} method are equal.
+     */
+    @Test
+    public void returnedInstancesShouldBeEqual() {
+        assertEquals("Instances returned should be equal.", specification, Specifications.empty());
     }
 
     /**

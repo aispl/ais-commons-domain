@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -28,6 +29,23 @@ public class NullValueSpecificationExpectations {
     }
 
     /**
+     * Verifies if two instances returned by {@link Specifications#nullValue()} method are equal.
+     */
+    @Test
+    public void returnedInstancesShouldBeEqual() {
+        assertEquals("Instances returned should be equal.", specification, Specifications.nullValue());
+    }
+
+    /**
+     * Verifies if the specification is descriptive ({@link #toString()} method provides human readable specification
+     * description).
+     */
+    @Test
+    public void shouldBeDescriptive() {
+        assertEquals("Specification should be descriptive.", "Is null", specification.toString());
+    }
+
+    /**
      * Verifies if the specification is satisfied by null value.
      */
     @Test
@@ -42,4 +60,5 @@ public class NullValueSpecificationExpectations {
     public void shouldntBeSatisfiedByNonNullValue() {
         assertFalse("Specification shouldn't be satisfied by non-null value.", specification.test(""));
     }
+
 }

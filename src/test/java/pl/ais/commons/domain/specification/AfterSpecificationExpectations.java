@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -17,6 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @SuppressWarnings("static-method")
 public class AfterSpecificationExpectations {
 
+    private static final Integer BOUNDARY = Integer.valueOf(2);
+
     private static Predicate<Integer> specification;
 
     /**
@@ -24,7 +27,24 @@ public class AfterSpecificationExpectations {
      */
     @BeforeClass
     public static void beforeAll() {
-        specification = Specifications.after(Integer.valueOf(2));
+        specification = Specifications.after(BOUNDARY);
+    }
+
+    /**
+     * Verifies if two instances returned by {@link Specifications#after(Comparable)} method are equal.
+     */
+    @Test
+    public void returnedInstancesShouldBeEqual() {
+        assertEquals("Instances returned should be equal.", specification, Specifications.after(BOUNDARY));
+    }
+
+    /**
+     * Verifies if the specification is descriptive ({@link #toString()} method provides human readable specification
+     * description).
+     */
+    @Test
+    public void shouldBeDescriptive() {
+        assertEquals("Specification should be descriptive.", "Is greater than " + BOUNDARY, specification.toString());
     }
 
     /**
@@ -42,7 +62,7 @@ public class AfterSpecificationExpectations {
     @Test
     public void shouldntBeSatisfiedByEqualValue() {
         assertFalse("Specification shouldn't be satisfied by value equal to predefined bound.",
-            specification.test(Integer.valueOf(2)));
+            specification.test(BOUNDARY));
     }
 
     /**

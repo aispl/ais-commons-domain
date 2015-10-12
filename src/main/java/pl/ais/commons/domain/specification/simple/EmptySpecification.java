@@ -20,11 +20,22 @@ import java.util.function.Predicate;
 @Immutable
 public final class EmptySpecification<C> implements Predicate<C> {
 
+    private static final Predicate INSTANCE = new EmptySpecification();
+
     /**
-     * Defines singleton instance of {@link EmptySpecification}.
+     * Constructs new instance.
      */
-    @SuppressWarnings("rawtypes")
-    public static final Predicate INSTANCE = new EmptySpecification();
+    private EmptySpecification() {
+        super();
+    }
+
+    /**
+     * @param <T> the type of candidate to be verified by the predicate
+     * @return shared instance of {@link EmptySpecification} predicate
+     */
+    public static <T> Predicate<T> empty() {
+        return INSTANCE;
+    }
 
     @Override
     public boolean test(final C candidate) {
@@ -45,6 +56,14 @@ public final class EmptySpecification<C> implements Predicate<C> {
             }
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Is empty";
     }
 
 }

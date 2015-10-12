@@ -5,6 +5,7 @@ import pl.ais.commons.domain.specification.simple.AfterSpecification;
 import pl.ais.commons.domain.specification.simple.BeforeSpecification;
 import pl.ais.commons.domain.specification.simple.EmptySpecification;
 import pl.ais.commons.domain.specification.simple.FitIntoSpecification;
+import pl.ais.commons.domain.specification.simple.NullValueSpecification;
 import pl.ais.commons.domain.specification.simple.RegexSpecification;
 
 import java.util.function.Predicate;
@@ -19,6 +20,13 @@ import java.util.function.Predicate;
 public final class Specifications {
 
     private static final Predicate<CharSequence> NOT_BLANK = blank().negate();
+
+    /**
+     * Constructs new instance.
+     */
+    private Specifications() {
+        super();
+    }
 
     /**
      * @param bound the bound
@@ -54,7 +62,7 @@ public final class Specifications {
      * @return specification satisfied only if provided candidate is empty (applicable to Collection, Map or String)
      */
     public static <T> Predicate<T> empty() {
-        return EmptySpecification.INSTANCE;
+        return EmptySpecification.empty();
     }
 
     /**
@@ -108,7 +116,7 @@ public final class Specifications {
      * @return specification satisfied by candidates being {@code null}
      */
     public static <T> Predicate<T> nullValue() {
-        return candidate -> null == candidate;
+        return NullValueSpecification.nullValue();
     }
 
     /**
@@ -116,13 +124,6 @@ public final class Specifications {
      */
     public static <T extends CharSequence> Predicate<T> validEmail() {
         return ValidEmailSpecification.INSTANCE;
-    }
-
-    /**
-     * Constructs new instance.
-     */
-    private Specifications() {
-        super();
     }
 
 }
