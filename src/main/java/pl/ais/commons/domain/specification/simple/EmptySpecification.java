@@ -20,7 +20,8 @@ import java.util.function.Predicate;
 @Immutable
 public final class EmptySpecification<C> implements Predicate<C> {
 
-    private static final Predicate INSTANCE = new EmptySpecification();
+    @SuppressWarnings("rawtypes")
+    private static final Predicate INSTANCE = new EmptySpecification<>();
 
     /**
      * Constructs new instance.
@@ -33,8 +34,9 @@ public final class EmptySpecification<C> implements Predicate<C> {
      * @param <T> the type of candidate to be verified by the predicate
      * @return shared instance of {@link EmptySpecification} predicate
      */
+    @SuppressWarnings("unchecked")
     public static <T> Predicate<T> empty() {
-        return INSTANCE;
+        return (Predicate<T>) INSTANCE;
     }
 
     @Override

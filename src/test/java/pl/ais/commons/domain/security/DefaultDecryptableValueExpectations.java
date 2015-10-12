@@ -1,10 +1,10 @@
 package pl.ais.commons.domain.security;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertTrue;
 import static org.springframework.util.SerializationUtils.deserialize;
 import static org.springframework.util.SerializationUtils.serialize;
-
-import org.junit.Test;
 
 /**
  * Verifies {@link DefaultDecryptableValue} expectations.
@@ -17,6 +17,7 @@ public class DefaultDecryptableValueExpectations {
     /**
      * Verifies if {@link DefaultDecryptableValue} is serializable, if applicable decryptor is serializable too.
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldBeSerializableWhenUsingSerializableDecryptor() {
         final String unencrypted = "Adenosine triphosphate";

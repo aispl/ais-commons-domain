@@ -14,12 +14,18 @@ import java.util.function.Predicate;
 @Immutable
 public final class ValidEmailSpecification implements Predicate<CharSequence> {
 
-    /**
-     * Defines singleton instance of {@link ValidEmailSpecification}.
-     */
-    @SuppressWarnings("rawtypes")
-    public static final Predicate INSTANCE = new ValidEmailSpecification();
+    private static final Predicate<CharSequence> INSTANCE = new ValidEmailSpecification<>();
 
+    /**
+     * @return shared instance of {@link ValidEmailSpecification}
+     */
+    public static Predicate<CharSequence> validEmail() {
+        return INSTANCE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public boolean test(final CharSequence candidate) {
@@ -33,6 +39,14 @@ public final class ValidEmailSpecification implements Predicate<CharSequence> {
             }
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Valid email";
     }
 
 }

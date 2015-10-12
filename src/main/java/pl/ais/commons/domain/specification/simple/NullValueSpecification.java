@@ -13,7 +13,8 @@ import java.util.function.Predicate;
 @Immutable
 public final class NullValueSpecification<C> implements Predicate<C> {
 
-    private static final NullValueSpecification INSTANCE = new NullValueSpecification();
+    @SuppressWarnings("rawtypes")
+    private static final NullValueSpecification INSTANCE = new NullValueSpecification<>();
 
     /**
      * Constructs new instance.
@@ -23,10 +24,12 @@ public final class NullValueSpecification<C> implements Predicate<C> {
     }
 
     /**
+     * @param <T> determines the type of candidate
      * @return shared instance of {@link NullValueSpecification} predicate
      */
-    public static Predicate nullValue() {
-        return INSTANCE;
+    @SuppressWarnings("unchecked")
+    public static <T> Predicate<T> nullValue() {
+        return (Predicate<T>) INSTANCE;
     }
 
     /**

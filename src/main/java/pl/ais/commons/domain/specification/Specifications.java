@@ -101,8 +101,8 @@ public final class Specifications {
     /**
      * @return specification satisfied by character sequences holding at least one non-whitespace character
      */
-    public static <T extends CharSequence> Predicate<T> notBlank() {
-        return (Predicate<T>) NOT_BLANK;
+    public static Predicate<CharSequence> notBlank() {
+        return NOT_BLANK;
     }
 
     /**
@@ -122,8 +122,8 @@ public final class Specifications {
     /**
      * @return specification satisfied if provided candidate is valid email address.
      */
-    public static <T extends CharSequence> Predicate<T> validEmail() {
-        return ValidEmailSpecification.INSTANCE;
+    public static Predicate<CharSequence> validEmail() {
+        return ValidEmailSpecification.validEmail();
     }
 
 }
