@@ -6,7 +6,8 @@ import javax.mail.internet.InternetAddress;
 import java.util.function.Predicate;
 
 /**
- * {@link Predicate} implementation which is satisfied if provided candidate is valid email address.
+ * {@link Predicate} implementation which is satisfied if provided candidate is a char sequence holding valid email
+ * address.
  *
  * @author Warlock, AIS.PL
  * @since 1.0.1
