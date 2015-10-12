@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 @Immutable
 public final class ValidEmailSpecification implements Predicate<CharSequence> {
 
-    private static final Predicate<CharSequence> INSTANCE = new ValidEmailSpecification<>();
+    private static final Predicate<CharSequence> INSTANCE = new ValidEmailSpecification();
 
     /**
      * @return shared instance of {@link ValidEmailSpecification}
