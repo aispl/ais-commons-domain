@@ -15,13 +15,13 @@ import java.util.function.Predicate;
 @Immutable
 public final class ValidEmailSpecification implements Predicate<CharSequence> {
 
-    private static final Predicate<CharSequence> INSTANCE = new ValidEmailSpecification();
+    private static final Predicate INSTANCE = new ValidEmailSpecification();
 
     /**
      * @return shared instance of {@link ValidEmailSpecification}
      */
-    public static Predicate<CharSequence> validEmail() {
-        return INSTANCE;
+    public static <T extends CharSequence> Predicate<T> validEmail() {
+        return (Predicate<T>) INSTANCE;
     }
 
     /**

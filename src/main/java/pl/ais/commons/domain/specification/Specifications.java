@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 @SuppressWarnings({"PMD.AvoidFieldNameMatchingMethodName", "PMD.TooManyMethods"})
 public final class Specifications {
 
-    private static final Predicate<CharSequence> NOT_BLANK = blank().negate();
+    private static final Predicate NOT_BLANK = blank().negate();
 
     /**
      * Constructs new instance.
@@ -101,8 +101,8 @@ public final class Specifications {
     /**
      * @return specification satisfied by character sequences holding at least one non-whitespace character
      */
-    public static Predicate<CharSequence> notBlank() {
-        return NOT_BLANK;
+    public static <T extends CharSequence> Predicate<T> notBlank() {
+        return (Predicate<T>) NOT_BLANK;
     }
 
     /**
@@ -122,7 +122,7 @@ public final class Specifications {
     /**
      * @return specification satisfied if provided candidate is valid email address.
      */
-    public static Predicate<CharSequence> validEmail() {
+    public static <T extends CharSequence> Predicate<T> validEmail() {
         return ValidEmailSpecification.validEmail();
     }
 
