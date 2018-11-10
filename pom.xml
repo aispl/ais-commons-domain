@@ -40,15 +40,15 @@
     </developers>
 
     <properties>
-        <jackson.version>2.8.10</jackson.version>
-        <spring.version>4.3.12.RELEASE</spring.version>
+        <jackson.version>2.9.7</jackson.version>
+        <spring.version>4.3.20.RELEASE</spring.version>
     </properties>
 
     <build>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.8.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -59,33 +59,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
                         <goals>
                             <goal>jxr</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.5</version>
-                <configuration>
-                    <includeTests>false</includeTests>
-                    <rulesets>
-                        <ruleset>${basedir}/pmd-ruleset.xml</ruleset>
-                    </rulesets>
-                    <sourceEncoding>ISO-8859-1</sourceEncoding>
-                    <targetJdk>1.8</targetJdk>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -103,19 +82,19 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.2</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4.5</version>
+            <version>1.4.7</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.0.Final</version>
+            <version>1.0.2.Final</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -126,14 +105,14 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <artifactId>mockito-core</artifactId>
+            <version>2.23.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.1.0</version>
+            <version>3.11.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
