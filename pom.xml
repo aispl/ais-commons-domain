@@ -40,7 +40,7 @@
     </developers>
 
     <properties>
-        <jackson.version>2.9.7</jackson.version>
+        <jackson.version>2.9.10.7</jackson.version>
         <spring.version>5.2.3.RELEASE</spring.version>
     </properties>
 
